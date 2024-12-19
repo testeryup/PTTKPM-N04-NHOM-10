@@ -10,9 +10,13 @@ Dự án tập trung vào việc xây dựng một website thương mại điệ
 Về công nghệ:
 
 Frontend: Sử dụng React để tạo giao diện thân thiện.
+
 Backend: Node.js (Express) để xử lý logic và kết nối dữ liệu.
+
 Database: MongoDB để lưu thông tin tài khoản, người dùng, và giao dịch.
+
 API: REST API để kết nối frontend với backend.
+
 Về chức năng:
 
 Người bán:
