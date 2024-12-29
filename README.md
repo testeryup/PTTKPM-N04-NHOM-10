@@ -39,3 +39,18 @@ Quản trị viên: Theo dõi và quản lý hoạt động trên toàn bộ web
 Website tạo ra một môi trường giao dịch minh bạch, tiện lợi, và an toàn cho cả người mua lẫn người bán.
 Giao diện người dùng hiện đại và dễ sử dụng.
 Hệ thống quản lý giao dịch hoạt động ổn định, giảm thiểu rủi ro giao dịch.
+
+A. Users & Authentication
+User profiles
+Role-based access
+Authentication tokens
+B. Products & Inventory
+Product categories (platforms)
+Product tiers
+Digital account inventory
+Stock management
+C. Orders & Transactions
+Shopping cart
+Order processing
+Payment history
+Seller profits
