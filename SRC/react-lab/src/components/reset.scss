@@ -1,0 +1,68 @@
+/* Box-sizing reset */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Remove default margins and paddings */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+blockquote,
+dl,
+dd {
+    margin: 0;
+    padding: 0;
+}
+
+/* Set core body defaults */
+body {
+    // min-height: 100vh;
+    scroll-behavior: smooth;
+    // line-height: 1.5;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #ffffff;
+    color: #333333;
+}
+
+/* Remove list styles on ul, ol elements */
+ul,
+ol {
+    list-style: none;
+}
+
+/* Remove default link styles */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Make images responsive */
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+/* Remove all animations and transitions for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+}

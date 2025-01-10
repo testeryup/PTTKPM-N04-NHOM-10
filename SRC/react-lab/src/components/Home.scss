@@ -1,0 +1,48 @@
+.home-container {
+    .banner-section {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+
+        .banner-item {
+            img {
+                width: 100%;
+                // height: 400px;
+                object-fit: cover;
+            }
+        }
+    }
+
+    // Custom slick dots
+    .slick-dots {
+        bottom: 25px;
+
+        li button:before {
+            color: white;
+            opacity: 0.5;
+        }
+
+        li.slick-active button:before {
+            color: white;
+            opacity: 1;
+        }
+    }
+
+    // Custom arrows
+    .slick-prev,
+    .slick-next {
+        z-index: 1;
+
+        &:before {
+            font-size: 30px;
+        }
+    }
+
+    .slick-prev {
+        left: 25px;
+    }
+
+    .slick-next {
+        right: 25px;
+    }
+}

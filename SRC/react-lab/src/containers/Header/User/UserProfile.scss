@@ -1,0 +1,52 @@
+.profile-container {
+    background-color: #ddd;
+
+    .profile-wrapper {
+        margin: 0 150px;
+        display: flex;
+        justify-content: center;
+
+        .profile {
+            // width: 400px;
+            height: 300px;
+            background-color: #ffffff;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            padding: 5px;
+            display: flex;
+
+            .user-infor-table {
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+
+                    tbody {
+                        tr {
+                            &:hover {
+                                background-color: greenyellow;
+                            }
+
+                            td {
+                                padding: 5px 10px
+                            }
+                        }
+                    }
+                }
+            }
+
+            .avatar-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                .avatar {
+                    background: no-repeat center/100% url('../../../assets/default-user-avatar.png');
+                    width: 80px;
+                    height: 80px;
+                    border-radius: 50%;
+                }
+            }
+        }
+    }
+}
