@@ -7,7 +7,9 @@ export const register = async (req, res) => {
     try {
         console.log("check req body:", req.body);
         const { email, password, username } = req.body;
-
+        if(!email || !password || !username){
+            return res.status(400).json({ message: 'Missing input parameters' });
+        }
         let existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ message: 'Email already exists' });
@@ -23,7 +25,18 @@ export const register = async (req, res) => {
             username
         });
 
-        res.status(200).json({ errCode: 0, message: 'Create user succeed' });
+        const refreshToken = generateRefreshToken(user.id, user.role);
+        const accessToken = generateAccessToken(user.id, user.role);
+
+        res.cookie('jwt', refreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'None',
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
+
+        res.status(200).json({ errCode: 0, message: 'Signup succeed!', role: user.role,token: accessToken });
+
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
