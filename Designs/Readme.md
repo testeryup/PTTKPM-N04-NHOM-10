@@ -4,4 +4,14 @@
 
 ### Thiết kế giao diện
 
+- React
+- Scss
+
 ### Thiết kế backend
+- Express
+- MongoDB
+
+### Bảo mật
+
+- JWT token
+- Menu phân quyền
