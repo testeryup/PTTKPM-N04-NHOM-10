@@ -3,6 +3,7 @@ export const path = {
     HOME_PAGE: '/home',
     APP: '/app',
     LOGIN: '/login',
+    SIGNUP: '/signup',
     USER_DASHBOARD: '/dashboard/user',
     SELLER_DASHBOARD: '/dashboard/seller',
     ADMIN_DASHBOARD: '/dashboard/admin',

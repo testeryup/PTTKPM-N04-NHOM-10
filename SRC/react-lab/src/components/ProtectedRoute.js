@@ -5,7 +5,8 @@ import { path } from '../ultils';
 export default function ProtectedRoute({ children, allowedRoles }) { // Added allowedRoles
     const auth = useSelector(state => state.auth);
     const user = useSelector(state => state.user);
-    
+    if (auth.loading) return <div>Loading...</div>;
+
     if (!auth.isAuthenticated) {
         return <Navigate to={path.LOGIN} replace />;
     }

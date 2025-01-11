@@ -5,7 +5,7 @@ import { logout } from '../features/auth/authSlice';
 export const authMiddleware = (storeAPI) => (next) => (action) => {
     // Handle successful login
     console.log("Action in middleware:", action);
-    if (action.type === 'auth/login/fulfilled' || action.type === 'auth/refreshToken/fulfilled') {
+    if (action.type === 'auth/login/fulfilled' || action.type === 'auth/refreshToken/fulfilled' || action.type === 'auth/register/fulfilled') {
         console.log("Setting token in middleware:", action.payload.token);
         setAuthToken(action.payload.token);
     }

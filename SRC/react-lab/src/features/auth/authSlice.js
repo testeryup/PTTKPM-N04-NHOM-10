@@ -19,9 +19,16 @@ export const login = createAsyncThunk(
 
 export const register = createAsyncThunk(
     'auth/register',
-    async ({ email, password, username }, thunkAPI) => {
+    async ({ email, password, username, verifyPassword }, thunkAPI) => {
         try {
+            if (password !== verifyPassword) {
+                return thunkAPI.rejectWithValue('Passwords do not match');
+            }
             const response = await authService.register(email, password, username);
+            console.log("check response from register:", response);
+            if (response.role) {
+                thunkAPI.dispatch(setUserRole(response.role));
+            }
             return response;
         } catch (e) {
             return thunkAPI.rejectWithValue(e.response?.data?.message || 'Register failed');
@@ -67,7 +74,11 @@ const authSlice = createSlice({
         loading: false,
         error: null
     },
-    reducers: {},
+    reducers: {
+        clearError: (state) => {
+            state.error = null;
+        }
+    },
     extraReducers: (builder) => {
         // Login
         builder
@@ -92,7 +103,8 @@ const authSlice = createSlice({
             })
             .addCase(register.fulfilled, (state, action) => {
                 state.loading = false;
-                // Optionally, auto-login after registration
+                state.token = action.payload.token;
+                state.isAuthenticated = true;
             })
             .addCase(register.rejected, (state, action) => {
                 state.loading = false;
@@ -102,6 +114,7 @@ const authSlice = createSlice({
         builder
             .addCase(refreshToken.pending, (state) => {
                 state.loading = true;
+                state.error = null;
             })
             .addCase(refreshToken.fulfilled, (state, action) => {
                 state.token = action.payload.token;
@@ -126,4 +139,5 @@ const authSlice = createSlice({
             });
     }
 });
+export const {clearError} = authSlice.actions;
 export default authSlice.reducer;

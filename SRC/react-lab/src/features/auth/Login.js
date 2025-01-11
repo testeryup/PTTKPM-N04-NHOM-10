@@ -11,7 +11,7 @@ import './Login.scss';
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    const [error, setError] = useState(null)
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -22,9 +22,6 @@ export default function Login() {
         if (auth.isAuthenticated && user.role) {
             // Navigate based on role
             switch (user.role) {
-                // case 'user':
-                //     navigate(path.USER_DASHBOARD);
-                //     break;
                 case 'seller':
                     navigate(path.SELLER_DASHBOARD);
                     break;
@@ -39,18 +36,20 @@ export default function Login() {
 
     const handleLogin = async () => {
         if (!email || !password) {
-            alert("Email and password are required");
+            setError("Email and password are required");
             return;
         }
 
         try {
-            await dispatch(login({ email, password }));
-            // Navigation is handled by useEffect
+            await dispatch(login({ email, password })).unwrap();
         } catch (error) {
-            console.error('Login failed:', error);
+            setError(error || 'Đăng nhập thất bại');
         }
     }
 
+    const handleSignup = () => {
+        navigate(path.SIGNUP);
+    }
     return (
         <>
             <UserHeader></UserHeader>
@@ -61,22 +60,24 @@ export default function Login() {
                     <div className="detail">Please enter your details</div>
                     <div className="credential">
                         <div className="email-section form-group">
-                            <label>Email</label>
+                            <label for="email">Email</label>
                             <input type="email" placeholder="Enter your email"
+                                id="email"
                                 onChange={(event) => setEmail(event.target.value)}
                                 value={email}
                             ></input>
                         </div>
                         <div className="password-section form-group">
-                            <label>Password</label>
+                            <label for="password">Password</label>
                             <input type="password" placeholder="Enter your password"
+                                id="password"
                                 onChange={(event) => setPassword(event.target.value)}
                                 value={password}
                             ></input>
                         </div>
                     </div>
                     <div className="error-handler">
-                        <span className="error-msg">{auth.error}</span>
+                        <span className="error-msg">{error ? error : ''}</span>
                         <span className="forgot-password">Forgot password</span>
                     </div>
                     <button
@@ -88,7 +89,7 @@ export default function Login() {
                     </button>
                     <div className="sign-up-section">
                         <span>Don't have an account? </span>
-                        <span className="sign-up">Sign up now</span>
+                        <span className="sign-up" onClick={handleSignup}>Sign up now</span>
                     </div>
                 </div>
             </div>

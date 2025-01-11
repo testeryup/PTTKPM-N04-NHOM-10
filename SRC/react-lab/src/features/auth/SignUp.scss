@@ -1,0 +1,111 @@
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgb(63, 94, 251);
+    background: radial-gradient(circle, rgba(63, 94, 251, 1) 0%, rgba(252, 70, 107, 1) 100%);
+    height: calc(100vh - 63px);
+    color: #2F2F2F;
+
+    .signup-wrapper {
+        .signup-content {
+            width: 500px;
+            height: 550px;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 30px;
+            border-radius: 10px;
+
+            h2 {
+                // text-transform: uppercase;
+                text-align: center;
+            }
+
+            .detail {
+                font-size: 0.85rem;
+                color: #727272;
+            }
+
+            .credential {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+
+                .form-group {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+
+                    label {
+                        font-size: 1rem;
+                        margin-bottom: 5px;
+                    }
+
+                    input {
+                        padding: 5px 10px;
+                        border: 1px solid #ccc;
+                        border-radius: 3px;
+                        font-size: 1rem;
+                        transition: border-color 0.3s, box-shadow 0.3s;
+
+                        &:focus {
+                            border-color: #3f5efb;
+                            outline: none;
+                            box-shadow: 0 0 5px rgba(63, 94, 251, 0.5);
+                        }
+
+                        &::placeholder {
+                            color: #bbb;
+                        }
+                    }
+                }
+            }
+
+            .error-handler {
+                display: flex;
+                justify-content: space-between;
+                font-size: 0.85rem;
+
+                .error-msg {
+                    color: red;
+                }
+
+                // .forgot-password {
+                //     color: rgb(25, 105, 229);
+                //     cursor: pointer;
+                // }
+            }
+
+            .sign-in-section {
+                font-size: 0.85rem;
+                display: flex;
+                justify-content: center;
+                gap: 5px;
+
+                .sign-in {
+                    color: rgb(25, 105, 229);
+                    cursor: pointer;
+                }
+            }
+
+            .btn-confirm {
+                &:hover {
+                    opacity: 1;
+                }
+
+                padding: 5px 10px;
+                color: white;
+                background-color: #6358DC;
+                outline: none;
+                border: none;
+                border-radius: 5px;
+                font-weight: 600;
+                opacity: 0.9;
+                cursor: pointer;
+
+            }
+        }
+    }
+}
