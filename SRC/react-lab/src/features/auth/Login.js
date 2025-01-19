@@ -60,7 +60,7 @@ export default function Login() {
                     <div className="detail">Please enter your details</div>
                     <div className="credential">
                         <div className="email-section form-group">
-                            <label for="email">Email</label>
+                            <label htmlFor="email">Email</label>
                             <input type="email" placeholder="Enter your email"
                                 id="email"
                                 onChange={(event) => setEmail(event.target.value)}
@@ -68,7 +68,7 @@ export default function Login() {
                             ></input>
                         </div>
                         <div className="password-section form-group">
-                            <label for="password">Password</label>
+                            <label htmlFor="password">Password</label>
                             <input type="password" placeholder="Enter your password"
                                 id="password"
                                 onChange={(event) => setPassword(event.target.value)}

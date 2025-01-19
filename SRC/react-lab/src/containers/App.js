@@ -16,6 +16,9 @@ import UserDashboard from '../containers/System/UserDashboard';
 import UserProfile from './Header/User/UserProfile';
 import SignUp from '../features/auth/SignUp';
 
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+
 export default function App() {
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth);
@@ -34,9 +37,22 @@ export default function App() {
 
     if (!isInitialized) return <div>Loading...</div>;
 
-    return (
+    return (<>
+        <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
+
         <Routes>
-            {/* <Route path="/" element={<Navigate to={path.HOME} />} /> */}
+
             <Route path={path.UNAUTHORIZED} element={<h1>Unauthorized Access</h1>} />
             <Route path={path.HOME} element={<Home></Home>} />
             <Route path={path.APP} element={<Application />} />
@@ -78,6 +94,9 @@ export default function App() {
 
             {/* Catch-All Route */}
             <Route path='*' element={<h1>404 - Page Not Found</h1>} />
+
+
         </Routes>
+    </>
     );
 }

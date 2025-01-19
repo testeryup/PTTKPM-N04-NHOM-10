@@ -12,21 +12,26 @@ import adminRoutes from './routes/admin.routes.js';
 import userRoutes from './routes/user.routes.js';
 import inventoryRoutes from './routes/inventory.routes.js';
 import transactionRoutes from './routes/transaction.routes.js'; // Import transaction routes
+import categoryRoutes from './routes/category.routes.js'
+
+
+// import seedCategories from './seeds/categorySeed.js';
 
 dotenv.config();
 const app = express();
 
-app.use(express.json()); // Parse JSON bodies
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+app.use(express.json({limit: '50mb'})); // Parse JSON bodies
+app.use(express.urlencoded({ extended: true, limit: '50mb', parameterLimit: 50000 })); // Parse URL-encoded bodies
 app.use(cookieParser());
 app.use(cors({
     origin: 'http://localhost:3000', // Frontend URL
     credentials: true, // Allow credentials (cookies, authorization headers)
 }));
 
-
+// seedCategories()
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/category', categoryRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes); // Use order routes
 app.use('/api/admin', adminRoutes);

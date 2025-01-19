@@ -1,11 +1,10 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
-
-export const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET || 'chihuahua';
-export const JWT_ACCESS_EXPRISES_IN = '15m';
-export const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || 'chihuahua';
-export const JWT_REFRESH_EXPRISES_IN = '24h';
+export const JWT_ACCESS_SECRET = process.env.ACCESS_TOKEN_SECRET || 'chihuahuaaccesstoken';
+export const JWT_ACCESS_EXPRISES_IN = '7d';
+export const JWT_REFRESH_SECRET = process.env.REFRESH_TOKEN_SECRET || 'chihuahuarefreshtoken';
+export const JWT_REFRESH_EXPRISES_IN = '7d';
 
 export const generateAccessToken = (userId, role) => {
   return jwt.sign({ id: userId, role }, JWT_ACCESS_SECRET, { expiresIn: JWT_ACCESS_EXPRISES_IN });

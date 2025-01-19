@@ -45,28 +45,28 @@ export default function SignUp() {
                         <div className='detail'>Nhập thông tin tài khoản</div>
                         <div className='credential'>
                             <div className='email-section form-group'>
-                                <label for="email">Email</label>
+                                <label htmlFor="email">Email</label>
                                 <input type="email" placeholder="Nhập email"
                                     id="email"
                                     onChange={(event) => setEmail(event.target.value)}
                                     value={email}></input>
                             </div>
                             <div className='password-section form-group'>
-                                <label for="password">Mật khẩu</label>
+                                <label htmlFor="password">Mật khẩu</label>
                                 <input type="password" placeholder="Nhập mật khẩu"
                                     id="password"
                                     onChange={(event) => setPassword(event.target.value)}
                                     value={password}></input>
                             </div>
                             <div className='password-section form-group'>
-                                <label for="password">Xác nhận mật khẩu</label>
+                                <label htmlFor="password">Xác nhận mật khẩu</label>
                                 <input type="password" placeholder="Xác nhận mật khẩu"
                                     id="password"
                                     onChange={(event) => setVerifyPassword(event.target.value)}
                                     value={verifyPassword}></input>
                             </div>
                             <div className='username-section form-group'>
-                                <label for="username">Username</label>
+                                <label htmlFor="username">Username</label>
                                 <input type="text" placeholder="Nhập username"
                                     id="username"
                                     onChange={(event) => setUserName(event.target.value)}

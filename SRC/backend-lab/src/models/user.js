@@ -16,7 +16,11 @@ const userSchema = new mongoose.Schema({
     enum: ['user', 'seller', 'admin'],
     default: 'user'
   },
-  username: String,
+  username: {
+    type: String,
+    required: true,
+    unique: true
+  },
   balance: {
     type: Number,
     default: 0

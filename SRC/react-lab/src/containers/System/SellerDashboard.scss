@@ -1,0 +1,42 @@
+.dashboard-container {
+    .dashboard-wrapper {
+        .dashboard-content {
+            display: flex;
+
+            .nav-taskbar {
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+                padding: 10px 5px;
+                background-color: #eee;
+                width: 12%;
+                height: calc(100vh - 61px);
+
+                .nav-taskbar-wrapper {
+                    .menu-item {
+                        cursor: pointer;
+                        margin: 5px 0;
+                        display: flex;
+                        align-items: center;
+                        padding: 10px 30px;
+                        gap: 15px;
+                        font-weight: 500;
+
+                        &.active,
+                        &:hover {
+                            border-radius: 10px;
+                            background-color: #ffffff;
+                        }
+                    }
+
+                }
+
+
+            }
+
+            .component {
+                background-color: #fff;
+                padding: 25px 50px 0 50px;
+                width: 88%;
+            }
+        }
+    }
+}

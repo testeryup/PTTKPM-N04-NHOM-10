@@ -8,5 +8,13 @@ export const path = {
     SELLER_DASHBOARD: '/dashboard/seller',
     ADMIN_DASHBOARD: '/dashboard/admin',
     UNAUTHORIZED: '/unauthorized',
-    PROFILE: '/profile'
+    PROFILE: '/profile',
+    SELLER_MENU: {
+        MONITOR: '/dashboard/seller/monitor',
+        PRODUCTS: '/dashboard/seller/products',
+        ORDERS: '/dashboard/seller/orders',
+        MESSAGE: '/dashboard/seller/message',
+        COUPON: '/dashboard/seller/coupon',
+        PAYMENT: '/dashboard/seller/payment'
+    }
 }

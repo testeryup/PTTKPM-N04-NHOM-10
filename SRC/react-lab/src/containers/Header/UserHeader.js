@@ -15,9 +15,9 @@ export default function UserHeader() {
     const { profile, loading, error } = useSelector(state => state.user);
 
     useEffect(() => {
-        
+
     }, [profile]);
-    
+
     const handleLogout = async () => {
         await dispatch(logout());
         navigate(path.HOME);
@@ -26,7 +26,32 @@ export default function UserHeader() {
         navigate(path.HOME);
     }
 
-    
+    const roleComponents = {
+        seller: (
+            <div>
+                <Link to={path.SELLER_DASHBOARD} style={{ display: "flex", justifyContent: 'center', alignItems: 'center' }}>
+                    <span className="material-symbols-outlined">store</span>
+                    <span>Cửa hàng</span>
+                </Link>
+            </div>
+        ),
+        admin: (
+            <div>
+                <Link to={path.ADMIN_DASHBOARD}>
+                    <span className="material-symbols-outlined">admin_panel_settings</span>
+                    <span>Admin</span>
+                </Link>
+            </div>
+        ),
+        default: (
+            <div className='cart-section'>
+                <div className='add-to-cart'>
+                    <FontAwesomeIcon icon="fa-solid fa-cart-shopping" />
+                </div>
+            </div>
+        )
+    };
+
     return (
         <div className="header-container">
             <div className="header-wrapper">
@@ -34,7 +59,6 @@ export default function UserHeader() {
                     <div className='content-left'>
                         <div className="logo" onClick={handleGoHome}>OCTOPUS</div>
                         <div className="route-section">
-
                             <ul className='route-list'>
                                 <li className='route'>Tất cả sản phẩm</li>
                                 <li className='route'>Sản phẩm mua nhiều</li>
@@ -48,12 +72,8 @@ export default function UserHeader() {
                             profile ?
                                 (
                                     <div className="user-section">
+                                        {roleComponents[profile.role] || roleComponents.default}
 
-                                        <div className='cart-section'>
-                                            <div className='add-to-cart'>
-                                                <FontAwesomeIcon icon="fa-solid fa-cart-shopping" />
-                                            </div>
-                                        </div>
                                         <div className='user-avatar'></div>
                                         <div className='user-info'>
                                             <div className='user-menu'>
@@ -66,10 +86,13 @@ export default function UserHeader() {
                                                         <FontAwesomeIcon icon="user" />
                                                         Trang cá nhân
                                                     </Link>
-                                                    <Link to="/orders">
-                                                        <FontAwesomeIcon icon="shopping-bag" />
-                                                        Đơn hàng
-                                                    </Link>
+                                                    {
+                                                        profile.role === 'user' &&
+                                                        <Link to="/orders">
+                                                            <FontAwesomeIcon icon="shopping-bag" />
+                                                            Đơn hàng
+                                                        </Link>
+                                                    }
                                                     <Link to="/settings">
                                                         <FontAwesomeIcon icon="cog" />
                                                         Cài đặt

@@ -1,0 +1,25 @@
+.seller-product-container {
+
+    .seller-product-wrapper {
+
+        .seller-product {
+            .heading {
+                display: flex;
+                justify-content: space-between;
+
+                .btn-add-product {
+                    color: white;
+                    outline: none;
+                    border: none;
+                    border-radius: 5px;
+                    padding: 10px 20px;
+                    background-color: #259f0be0;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+                }
+            }
+        }
+    }
+}

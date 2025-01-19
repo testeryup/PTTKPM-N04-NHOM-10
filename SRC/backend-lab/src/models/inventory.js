@@ -1,11 +1,10 @@
 import mongoose from 'mongoose';
 
 const inventorySchema = new mongoose.Schema({
-    product: {
+    sku: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product'
+        ref: 'SKU'
     },
-    sku: String,
     credentials: {
         username: String,
         password: String,
