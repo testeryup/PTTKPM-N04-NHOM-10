@@ -10,4 +10,7 @@ router.post('/', verifyToken, requireRole(['seller', 'admin']), inventoryControl
 // Get seller's inventory
 router.get('/', verifyToken, requireRole(['seller', 'admin']), inventoryController.getSellerInventory);
 
+router.get('/:skuId', verifyToken, requireRole(['seller', 'admin']), inventoryController.getInventoryBySkuId);
+
+router.delete('/', verifyToken, requireRole(['seller', 'admin']), inventoryController.deleteInventoryById)
 export default router;

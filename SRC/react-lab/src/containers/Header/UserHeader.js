@@ -1,18 +1,21 @@
 import './UserHeader.scss';
 import { useEffect } from 'react';
+import { useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { path } from "../../ultils";
 import { logout } from "../../features/auth/authSlice";
-import { fetchUserProfile } from '../../features/user/userSlice';
+import CartPreview from './User/CartPreview';
 
 export default function UserHeader() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const auth = useSelector(state => state.auth);
     const { profile, loading, error } = useSelector(state => state.user);
+    const [showCart, setShowCart] = useState(false);
+    const { items } = useSelector(state => state.cart);
 
     useEffect(() => {
 
@@ -44,10 +47,16 @@ export default function UserHeader() {
             </div>
         ),
         default: (
-            <div className='cart-section'>
-                <div className='add-to-cart'>
+            <div className='cart-section'
+                onMouseEnter={() => setShowCart(true)}
+                onMouseLeave={() => setShowCart(false)}>
+                <Link to="/cart" className='add-to-cart'>
                     <FontAwesomeIcon icon="fa-solid fa-cart-shopping" />
-                </div>
+                    {items?.length > 0 && (
+                        <span className="cart-count">{items.length}</span>
+                    )}
+                </Link>
+                {showCart && <CartPreview items={items} />}
             </div>
         )
     };
@@ -88,14 +97,18 @@ export default function UserHeader() {
                                                     </Link>
                                                     {
                                                         profile.role === 'user' &&
-                                                        <Link to="/orders">
+                                                        (<Link to="/orders">
                                                             <FontAwesomeIcon icon="shopping-bag" />
                                                             Đơn hàng
-                                                        </Link>
+                                                        </Link>)
                                                     }
                                                     <Link to="/settings">
                                                         <FontAwesomeIcon icon="cog" />
                                                         Cài đặt
+                                                    </Link>
+                                                    <Link to="/support">
+                                                        <FontAwesomeIcon icon="headset" />
+                                                        Trung tâm hỗ trợ
                                                     </Link>
                                                     <Link onClick={handleLogout} className="logout">
                                                         <FontAwesomeIcon icon="sign-out-alt" />

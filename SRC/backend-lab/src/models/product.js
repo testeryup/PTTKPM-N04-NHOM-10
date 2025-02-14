@@ -28,7 +28,7 @@ const productSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-
+productSchema.index({ seller: 1 });
 productSchema.pre('save', async function (next) {
 
   const category = await mongoose.model('Category').findById(this.category);

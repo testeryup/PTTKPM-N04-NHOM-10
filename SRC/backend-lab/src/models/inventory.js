@@ -6,10 +6,8 @@ const inventorySchema = new mongoose.Schema({
         ref: 'SKU'
     },
     credentials: {
-        username: String,
-        password: String,
-        email: String,
-        additionalInfo: Object
+        type: String,
+        required: true
     },
     status: {
         type: String,

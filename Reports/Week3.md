@@ -1,19 +1,14 @@
-## Thành viên nhóm
+## Tuần 3: Phát triển frontend cơ bản
 
-- Nguyễn Mạnh Đạt
+### Mục tiêu:
+- Xây dựng giao diện người dùng cơ bản.
 
-### Tiến độ dự án hiện tại
-
-- Thiết kế database
-- Viết API cho backend
-- Sử dụng React redux
-
-### Dự định sắp tới
-
-- Thiết lập API cho react redux
-- Hoàn thiện menu phân quyền người dùng
-
-### Ghi chú
-
-- Kết nối với backend vẫn còn nhiều lỗi
-- Vẫn chưa tạo được menu phân quyền cho 3 loại người dùng
+### Công việc cần làm:
+1. Thiết lập React.js với Create React App hoặc Vite.
+2. Tạo các component cơ bản:
+   - Header, Footer.
+   - Trang chủ (Home): Hiển thị danh sách tài khoản.
+   - Trang chi tiết tài khoản (Account Detail).
+3. Kết nối frontend với backend để hiển thị dữ liệu tài khoản.
+4. Sử dụng Axios hoặc Fetch API để gọi dữ liệu từ backend.
+5. Commit và push code lên GitHub.

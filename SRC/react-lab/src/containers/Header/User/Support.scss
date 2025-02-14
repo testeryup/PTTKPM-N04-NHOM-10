@@ -1,0 +1,168 @@
+.support-container {
+    min-height: calc(100vh - 64px);
+    background-color: #f5f6fa;
+    padding: 2rem;
+
+    .support-content {
+        max-width: 800px;
+        margin: 0 auto;
+
+        .support-header {
+            text-align: center;
+            margin-bottom: 2rem;
+
+            h1 {
+                color: #2d3748;
+                font-size: 2rem;
+                margin-bottom: 0.5rem;
+            }
+
+            p {
+                color: #718096;
+            }
+        }
+
+        .support-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+
+            .tab {
+                padding: 0.75rem 1.5rem;
+                border: none;
+                border-radius: 8px;
+                background: white;
+                color: #4a5568;
+                font-size: 1rem;
+                cursor: pointer;
+                transition: all 0.2s;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+                i {
+                    font-size: 1.1rem;
+                }
+
+                &:hover {
+                    background: #edf2f7;
+                }
+
+                &.active {
+                    background: #e94560;
+                    color: white;
+                }
+            }
+        }
+
+        .support-body {
+            .faq-section {
+                .faq-item {
+                    background: white;
+                    border-radius: 8px;
+                    margin-bottom: 1rem;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                    overflow: hidden;
+                    cursor: pointer;
+
+                    .faq-question {
+                        padding: 1rem 1.5rem;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        font-weight: 500;
+                        color: #2d3748;
+
+                        i {
+                            color: #a0aec0;
+                            transition: transform 0.2s;
+                        }
+                    }
+
+                    .faq-answer {
+                        padding: 0 1.5rem;
+                        max-height: 0;
+                        overflow: hidden;
+                        color: #718096;
+                        transition: all 0.3s ease-in-out;
+                    }
+
+                    &.expanded {
+                        .faq-question i {
+                            transform: rotate(180deg);
+                        }
+
+                        .faq-answer {
+                            padding: 1rem 1.5rem;
+                            max-height: 200px;
+                            border-top: 1px solid #edf2f7;
+                        }
+                    }
+
+                    &:hover {
+                        background: #f8fafc;
+                    }
+                }
+            }
+
+            .contact-section {
+                .contact-card {
+                    background: white;
+                    border-radius: 8px;
+                    padding: 2rem;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+                    h3 {
+                        color: #2d3748;
+                        margin-bottom: 1.5rem;
+                        font-size: 1.25rem;
+                    }
+
+                    .info-item {
+                        display: flex;
+                        align-items: center;
+                        gap: 1rem;
+                        margin-bottom: 1.5rem;
+
+                        i {
+                            color: #e94560;
+                            font-size: 1.25rem;
+                            margin-top: 0.25rem;
+                        }
+
+                        label {
+                            color: #718096;
+                            font-size: 0.875rem;
+                            display: block;
+                            margin-bottom: 0.25rem;
+                        }
+
+                        p {
+                            color: #2d3748;
+                            font-weight: 500;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .support-container {
+        padding: 1rem;
+
+        .support-content {
+            .support-tabs {
+                flex-direction: column;
+
+                .tab {
+                    width: 100%;
+                    justify-content: center;
+                }
+            }
+        }
+    }
+}

@@ -158,13 +158,28 @@
 
                     .cart-section {
                         padding-right: 20px;
-
+                        position: relative;
+    
                         .add-to-cart {
-                            font-size: 30px;
-                            cursor: pointer;
-
-                            &:hover {
-                                color: brown;
+                            display: flex;
+                            align-items: center;
+                            color: inherit;
+                            text-decoration: none;
+                            position: relative;
+                            
+                            .cart-count {
+                                position: absolute;
+                                top: -8px;
+                                right: -8px;
+                                background: #e94560;
+                                color: white;
+                                border-radius: 50%;
+                                width: 18px;
+                                height: 18px;
+                                font-size: 12px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
                             }
                         }
                     }

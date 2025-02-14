@@ -1,0 +1,111 @@
+.card-container {
+    padding: 0 10px;
+
+    .card-wrapper {
+        .card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+
+            &:hover {
+                transform: translateY(-6px);
+                box-shadow: 0 12px 16px rgba(0, 0, 0, 0.1);
+            }
+
+            .product-image {
+                // height: 200px;
+                // position: relative;
+                // overflow: hidden;
+
+                // &:before {
+                //     content: '';
+                //     position: absolute;
+                //     top: 0;
+                //     left: 0;
+                //     right: 0;
+                //     bottom: 0;
+                //     background: rgba(0,0,0,0.03);
+                // }
+            }
+
+            .infor {
+                padding: 8px;
+
+                .price {
+                    color: #e74c3c;
+                    font-size: 18px;
+                    font-weight: 600;
+                    margin-bottom: 4px;
+                }
+
+                .action {
+                    .meta-data {
+                        .name {
+                            font-size: 1rem;
+                            line-height: 1.4;
+                            color: #2c3e50;
+                            // margin-bottom: 8px;
+                            font-weight: 500;
+                            white-space: nowrap; // Force single line
+                            overflow: hidden; // Hide overflow
+                            text-overflow: ellipsis; // Add ellipsis
+                            max-width: 100%; // Limit width
+                            cursor: pointer;
+
+                            &:hover {
+                                color: #0a59cc;
+                            }
+                        }
+
+                        .seller {
+                            color: #7f8c8d;
+                            font-size: 13px;
+
+                            &:hover {
+                                color: #0a59cc;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .add-to-cart {
+                // position: absolute;
+                bottom: -40px;
+                left: 0;
+                right: 0;
+                padding: 10px;
+                background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.9));
+                opacity: 0;
+                transition: all 0.3s ease;
+
+                .btn-add-cart {
+                    width: 100%;
+                    padding: 4px 8px;
+                    border: none;
+                    border-radius: 20px;
+                    background: linear-gradient(45deg, #0a59cc, #2980b9);
+                    color: white;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: transform 0.2s ease;
+
+                    &:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 4px 8px rgba(10, 89, 204, 0.2);
+                    }
+                }
+            }
+
+            &:hover {
+                .add-to-cart {
+                    bottom: 0;
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}

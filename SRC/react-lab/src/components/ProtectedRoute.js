@@ -1,11 +1,12 @@
 import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { path } from '../ultils';
+import Loading from './Loading';
 
 export default function ProtectedRoute({ children, allowedRoles }) { // Added allowedRoles
     const auth = useSelector(state => state.auth);
     const user = useSelector(state => state.user);
-    if (auth.loading) return <div>Loading...</div>;
+    if (auth.loading) return <Loading></Loading>;
 
     if (!auth.isAuthenticated) {
         return <Navigate to={path.LOGIN} replace />;

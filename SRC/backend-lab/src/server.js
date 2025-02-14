@@ -10,10 +10,11 @@ import productRoutes from './routes/product.routes.js';
 import orderRoutes from './routes/order.routes.js'; // Uncomment this line
 import adminRoutes from './routes/admin.routes.js';
 import userRoutes from './routes/user.routes.js';
+import sellerRoutes from './routes/seller.routes.js';
 import inventoryRoutes from './routes/inventory.routes.js';
 import transactionRoutes from './routes/transaction.routes.js'; // Import transaction routes
 import categoryRoutes from './routes/category.routes.js'
-
+import skuRoutes from './routes/sku.routes.js';
 
 // import seedCategories from './seeds/categorySeed.js';
 
@@ -35,9 +36,11 @@ app.use('/api/category', categoryRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes); // Use order routes
 app.use('/api/admin', adminRoutes);
+app.use('/api/seller', sellerRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/transactions', transactionRoutes); // Use transaction routes
+app.use('/api/sku', skuRoutes); // Use transaction routes
 
 
 

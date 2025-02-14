@@ -5,7 +5,7 @@ import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '.
 
 export const register = async (req, res) => {
     try {
-        console.log("check req body:", req.body);
+        // console.log("check req body:", req.body);
         const { email, password, username } = req.body;
         if(!email || !password || !username){
             return res.status(400).json({ message: 'Missing input parameters' });
@@ -80,7 +80,7 @@ export const refresh = async (req, res) => {
 
     const refreshToken = cookies.jwt;
     const user = verifyRefreshToken(refreshToken);
-    console.log("check user on refresh token:", user);
+    // console.log("check user on refresh token:", user);
     if(user){
         const accessToken = generateAccessToken(user.id, user.role);
         res.status(200).json({token: accessToken});

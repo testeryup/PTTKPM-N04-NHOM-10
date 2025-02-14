@@ -1,29 +1,66 @@
 .product-slider-container {
-    background-color: #eeee;
+    background-color: #f8f9fa;
+    padding: 40px 0;
 
     .product-slider-wrapper {
-        // margin: 30px 250px;
-        width: 1200px;
-        margin: 30px auto;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
 
         .product-slider {
             .heading {
-                height: 3rem;
                 display: flex;
-                gap: 10px;
+                align-items: center;
+                margin-bottom: 30px;
 
                 .vertical-bar {
-                    width: 20px;
-                    height: 100%;
-                    background-color: red;
-                    display: inline-block;
-                    border-radius: 5px;
-                    margin-left: 20px;
+                    width: 15px;
+                    height: 30px;
+                    background: linear-gradient(45deg, #0a59cc, #2ecc71);
+                    border-radius: 3px;
+                    margin-right: 15px;
+                }
+
+                .header {
+                    // font-size: 24px;
+                    font-weight: 600;
+                    color: #2c3e50;
                 }
             }
 
-            .product-item {
-                padding: 10px 20px;
+            // Slider customization
+            .slick-track {
+                margin: 15px 0;
+            }
+
+            .slick-arrow {
+                width: 40px;
+                height: 40px;
+                background: white;
+                border-radius: 50%;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                z-index: 1;
+
+                &:before {
+                    color: #0a59cc;
+                    font-size: 20px;
+                }
+
+                &:hover {
+                    background: #0a59cc;
+
+                    &:before {
+                        color: white;
+                    }
+                }
+            }
+
+            .slick-prev {
+                left: -20px;
+            }
+
+            .slick-next {
+                right: -20px;
             }
         }
     }

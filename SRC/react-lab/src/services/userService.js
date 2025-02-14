@@ -8,10 +8,39 @@ export const getUserProfile = () => {
 export const getCategory = () => {
     return api.get('/api/category');
 }
-export const createProduct = (data) => {
+export const createOrUpdateProduct = (data) => {
     return api.post('/api/products', data);
 }
+export const getProductById = (id) => {
+    return api.get(`/api/seller/products/${id}`);
+}
+export const userGetProductById = (id) => {
+    return api.get(`/api/products/${id}`);
+}
+export const getProducts = () => {
+    return api.get('/api/products');
+}
+
+export const initOrder = (items) => {
+    return api.post('/api/orders/init', {items})
+} 
+
+export const createOrder = (items) => {
+    return api.post('/api/orders', {items});
+}
+
+export const getSkuNames = (skus) => {
+    return api.get('/api/sku', {items: skus});
+}
+
+export const getOrderById = (id) => {
+    return api.get(`/api/orders/${id}`);
+}
+
+export const getOrders = ({page, limit, status='all'}) => {
+    return api.get(`/api/orders?page=${page}&limit=${limit}&status=${status}`);
+}
 const userService = {
-    getUserProfile, getCategory, createProduct
+    getUserProfile, getCategory, createOrUpdateProduct, getProducts, userGetProductById, getSkuNames
 }
 export default userService;

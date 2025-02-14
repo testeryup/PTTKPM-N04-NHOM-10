@@ -35,6 +35,9 @@ export default function SignUp() {
         }
     }
 
+    const handleLogin = () => {
+        navigate(path.LOGIN)
+    }
     return (
         <>
             <UserHeader></UserHeader>
@@ -83,12 +86,13 @@ export default function SignUp() {
                             className="btn-confirm"
                             onClick={handleSignUp}
                             disabled={auth.loading}
+                            
                         >
                             {auth.loading ? 'Đang đăng ký tài khoản...' : 'Đăng ký tài khoản'}
                         </button>
                         <div className="sign-in-section">
                             <span>Đã có tài khoản? Vậy thì{' '}</span>
-                            <span className="sign-in">Đăng nhập luôn</span>
+                            <span className="sign-in" onClick={handleLogin}>Đăng nhập luôn</span>
                         </div>
                     </div>
                 </div>

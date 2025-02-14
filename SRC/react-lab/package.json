@@ -19,6 +19,7 @@
   "description": "",
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@fortawesome/fontawesome-free": "^6.7.2",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
@@ -30,11 +31,11 @@
     "font-awesome": "4.7.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hot-toast": "^2.5.1",
     "react-redux": "9.2.0",
     "react-router-dom": "7.1.1",
     "react-scripts": "^5.0.1",
     "react-slick": "0.30.3",
-    "react-toastify": "11.0.3",
     "redux-persist": "6.0.0",
     "slick-carousel": "1.8.1"
   },

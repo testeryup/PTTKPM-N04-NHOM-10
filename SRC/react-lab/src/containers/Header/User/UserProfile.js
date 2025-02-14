@@ -1,59 +1,83 @@
 import './UserProfile.scss';
 import UserHeader from '../UserHeader';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
+import Loading from '../../../components/Loading';
+import { formatCurrency } from '../../../ultils';
 
 export default function UserProfile() {
     const { profile, loading, error } = useSelector(state => state.user);
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
-    // if (!profile) return null;
+
+    const formatDate = (dateString) => {
+        return new Date(dateString).toLocaleString('vi-VN', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
+    };
+
+    if (loading) return <Loading />;
+    if (error) return <div className="error-message">Error: {error}</div>;
+
     return (
         <>
-            <UserHeader></UserHeader>
-            {/* {JSON.stringify(profile)} */}
+            <UserHeader />
             <div className='profile-container'>
-                <div className='profile-wrapper'>
-                    <div className='profile'>
-                        <div className='user-infor-table'>
-                            <table>
-                                <thead></thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Username</td>
-                                        <td>{profile?.username ? profile.username : ''}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Email</td>
-                                        <td>{profile?.email ? profile.email : ''}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tài khoản</td>
-                                        <td>{profile?.balance >= 0 ? `$ ${profile.balance}` : ''}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Role</td>
-                                        <td>{profile?.role ? profile.role : ''}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Trạng thái</td>
-                                        <td>{profile?.status ? profile.status : ''}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tham gia vào</td>
-                                        <td>{profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString() : ''}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div className='avatar-container'>
+                <div className='profile-content'>
+                    <div className='profile-header'>
+                        <h1>Thông tin tài khoản</h1>
+                    </div>
+                    
+                    <div className='profile-grid'>
+                        <div className='profile-avatar'>
                             <div className='avatar'></div>
-                            <div className='change-avatar'>
-                                <button>Đổi ảnh đại diện</button>
+                            <button className='change-avatar-btn'>
+                                <i className="fas fa-camera"></i>
+                                Đổi ảnh đại diện
+                            </button>
+                            <div className='user-status'>
+                                <span className={`status-badge ${profile?.status?.toLowerCase()}`}>
+                                    {profile?.status || 'Chưa xác định'}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className='profile-details'>
+                            <div className='detail-group'>
+                                <label>Tên người dùng</label>
+                                <div className='detail-value'>{profile?.username || 'Chưa cập nhật'}</div>
+                            </div>
+
+                            <div className='detail-group'>
+                                <label>Email</label>
+                                <div className='detail-value'>{profile?.email || 'Chưa cập nhật'}</div>
+                            </div>
+
+                            <div className='detail-group'>
+                                <label>Số dư tài khoản</label>
+                                <div className='detail-value highlight'>
+                                    {profile?.balance >= 0 ? formatCurrency(profile.balance) : 0}₫
+                                </div>
+                            </div>
+
+                            <div className='detail-group'>
+                                <label>Vai trò</label>
+                                <div className='detail-value role'>
+                                    <i className="fas fa-user-shield"></i>
+                                    {profile?.role || 'Chưa cập nhật'}
+                                </div>
+                            </div>
+
+                            <div className='detail-group'>
+                                <label>Ngày tham gia</label>
+                                <div className='detail-value'>
+                                    <i className="far fa-calendar-alt"></i>
+                                    {profile?.createdAt ? formatDate(profile.createdAt) : 'Chưa cập nhật'}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </>
-    )
+    );
 }

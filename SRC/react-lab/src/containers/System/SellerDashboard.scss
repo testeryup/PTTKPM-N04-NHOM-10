@@ -19,11 +19,13 @@
                         padding: 10px 30px;
                         gap: 15px;
                         font-weight: 500;
+                        color: gray;
 
                         &.active,
                         &:hover {
                             border-radius: 10px;
                             background-color: #ffffff;
+                            color: #333;
                         }
                     }
 

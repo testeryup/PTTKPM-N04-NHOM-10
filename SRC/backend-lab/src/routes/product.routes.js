@@ -4,7 +4,7 @@ import { verifyToken, requireRole } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 
-router.post('/', verifyToken, requireRole(['seller', 'admin']), productController.createProduct);
+router.post('/', verifyToken, requireRole(['seller', 'admin']), productController.upsertProduct);
 router.get('/', productController.getProducts);
-router.delete('/delete', verifyToken, requireRole(['seller', 'admin']), productController.deleteProduct)
+router.get('/:productId', productController.getProductById);
 export default router;

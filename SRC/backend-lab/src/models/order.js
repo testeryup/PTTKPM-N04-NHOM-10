@@ -7,22 +7,44 @@ const orderSchema = new mongoose.Schema({
         required: true
     },
     items: [{
-        product: {
+        sku: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Product'
+            ref: 'SKU',
+            required: true
         },
-        sku: String,
-        quantity: Number,
-        price: Number
+        quantity: {
+            type: Number,
+            required: true,
+            min: 1
+        },
+        price: {
+            type: Number,
+            required: true
+        }
     }],
-    total: Number,
+    total: {
+        type: Number,
+        required: true
+    },
     status: {
         type: String,
-        enum: ['pending', 'completed', 'failed', 'refunded'],
+        enum: ['pending', 'processing', 'completed', 'canceled', 'refunded'],
+        default: 'pending'
+    },
+    paymentMethod: {
+        type: String,
+        // required: true,
+        enum: ['balance', 'bank_transfer'],
+        default: 'balance'
+    },
+    paymentStatus: {
+        type: String,
+        enum: ['pending', 'completed', 'failed'],
         default: 'pending'
     }
 }, {
     timestamps: true
 });
-
+orderSchema.index({ buyer: 1, _id: -1 });
+orderSchema.index({ 'items.sku': 1 });
 export default mongoose.model('Order', orderSchema);

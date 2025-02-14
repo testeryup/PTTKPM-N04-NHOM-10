@@ -18,7 +18,8 @@ export const userSlice = createSlice({
     initialState: {
         role: null,
         language: 'vn', // Example user preference
-        profile: null
+        profile: null,
+        error: null
     },
     reducers: {
         setUserRole: (state, action) => {
@@ -27,10 +28,11 @@ export const userSlice = createSlice({
         clearUserProfile: (state) => {
             state.role = null;
             state.profile = null;
+            state.error = null;
         },
         setUserLanguage: (state, action) => {
             state.language = action.payload;
-        }
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -42,7 +44,7 @@ export const userSlice = createSlice({
                 state.loading = false;
             })
             .addCase(fetchUserProfile.rejected, (state, action) => {
-                state.error = action.payload;
+                // state.error = action.payload;
                 state.loading = false;
             });
     }

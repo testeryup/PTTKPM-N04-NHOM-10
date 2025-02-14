@@ -33,7 +33,20 @@ const skuSchema = new mongoose.Schema({
         default: 'available',
         required: true,
     },
-    features: [String]
+    sales: {
+        count: {
+            type: Number,
+            default: 0
+        },
+        revenue: {
+            type: Number,
+            default: 0
+        },
+        lastSale: {
+            type: Date,
+            default: null
+        }
+    },
 }, { timestamps: true });
 
 skuSchema.index(
@@ -52,9 +65,35 @@ skuSchema.pre('save', async function (next) {
     });
 
     if (existingSku) {
-        throw new Error('SKU không thể trùng nhau với 1 sản phẩm');
+        throw new Error('1 sản phẩm không thể có SKU trùng nhau');
     }
     next();
 });
 
+// Add method to get total sales for a product
+skuSchema.statics.getProductSales = async function(productId) {
+    return this.aggregate([
+        { 
+            $match: { 
+                product: new mongoose.Types.ObjectId(productId) 
+            }
+        },
+        {
+            $group: {
+                _id: '$product',
+                totalSales: { $sum: '$sales.count' },
+                totalRevenue: { $sum: '$sales.revenue' }
+            }
+        }
+    ]);
+};
+
+// Add method to update sales when order completes
+skuSchema.methods.updateSales = async function(quantity, price) {
+    this.sales.count += quantity;
+    this.sales.revenue += quantity * price;
+    this.sales.lastSale = new Date();
+    this.stock -= quantity;
+    return this.save();
+};
 export default mongoose.model('SKU', skuSchema);

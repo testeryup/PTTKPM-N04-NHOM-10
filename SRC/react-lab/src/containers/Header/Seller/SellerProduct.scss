@@ -20,6 +20,128 @@
                     gap: 5px;
                 }
             }
+
+            .seller-products-container {
+                width: 100%;
+                // background-color: #259f0be0;
+                margin-top: 30px;
+                height: 80vh;
+                overflow: auto;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                border-radius: 4px;
+
+                .seller-products {
+                    max-width: 100%;
+                    overflow-x: auto;
+
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        text-align: left;
+                        background: #fdfdfd;
+                        font-family: 'Arial', sans-serif;
+                        border-radius: 4px;
+                        overflow: hidden;
+
+                        thead {
+                            background-color: #4CAF50;
+                            color: white;
+
+                            tr {
+                                th {
+                                    padding: 12px;
+                                    font-size: 16px;
+                                    text-transform: uppercase;
+                                }
+                            }
+                        }
+
+                        tbody {
+                            tr {
+                                td {
+                                    .td-image {
+                                        width: 100px;
+                                        height: 100px;
+                                    }
+
+                                    .pd-description {
+                                        max-width: 500px;
+                                        white-space: nowrap;
+                                        overflow: hidden;
+                                        text-overflow: ellipsis;
+                                        font-weight: 300;
+                                        color: gray;
+                                        font-size: 0.875rem;
+                                        margin-top: 5px;
+                                    }
+
+                                    padding: 10px 12px;
+                                    border-bottom: 1px solid #ddd;
+                                }
+
+
+                                td:nth-child(2) {
+                                    max-width: 350px;
+                                    /* Restrict column width */
+                                    white-space: nowrap;
+                                    /* Prevent line breaks */
+                                    overflow: hidden;
+                                    /* Hide overflowing text */
+                                    text-overflow: ellipsis;
+                                    /* Add ellipsis (...) */
+                                }
+
+                                .pd-action {
+                                    .btn {
+                                        display: inline-block;
+                                        cursor: pointer;
+                                        border-radius: 4px;
+                                        padding: 5px 10px;
+                                        // color: white;
+                                        margin-right: 8px;
+                                        font-size: 0.875rem;
+
+                                        &:hover {
+                                            opacity: 0.9;
+                                        }
+
+                                        &.publish {
+                                            color: #0a59cc;
+                                            border: 1px solid #0a59cc;
+
+                                        }
+
+                                        &.edit {
+                                            color: #e8a508;
+                                            border: 1px solid #e8a508;
+                                        }
+
+                                        &.delete {
+                                            color: red;
+                                            border: 1px solid red;
+                                        }
+
+                                        .material-symbols-outlined {
+                                            vertical-align: bottom;
+                                        }
+                                    }
+                                }
+                            }
+
+                            tr:nth-child(odd) {
+                                background-color: #f9f9f9;
+                            }
+
+                            tr:hover {
+                                background-color: #f1f1f1;
+                                /* Row hover effect */
+                            }
+                        }
+
+
+                    }
+                }
+            }
         }
     }
 }

@@ -62,10 +62,10 @@ select {
 }
 
 /* Remove all animations and transitions for users who prefer reduced motion */
-@media (prefers-reduced-motion: reduce) {
-    * {
-        animation: none !important;
-        transition: none !important;
-        scroll-behavior: auto !important;
-    }
-}
+// @media (prefers-reduced-motion: reduce) {
+//     * {
+//         animation: none !important;
+//         transition: none !important;
+//         scroll-behavior: auto !important;
+//     }
+// }

@@ -1,0 +1,109 @@
+.inventory-container {
+    .inventory-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: background 0.3s ease;
+
+        &.show {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .inventory-content {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            width: 1200px;
+
+            .header {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 30px;
+
+                .btn-close {
+                    display: inline;
+                    background: none;
+                    padding: 0;
+                    outline: none;
+                    border: none;
+                    color: red;
+                    cursor: pointer;
+                }
+            }
+
+            .body {
+                select {
+                    padding: 5px 10px;
+                    border: 1px solid #ccc;
+                    border-radius: 3px;
+                    font-size: 1rem;
+                    background-color: white;
+                }
+
+                .inventory-section {
+                    display: flex;
+                    justify-content: space-between;
+
+                    .view {
+                        width: 49%;
+                        display: flex;
+                        flex-direction: column;
+                        overflow: auto;
+                        max-height: 230px;
+
+                        table {
+                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                            /* Subtle shadow effect */
+                            border-radius: 8px;
+                            /* Rounded corners */
+                            overflow: hidden;
+                            border-collapse: collapse;
+
+                            th {
+                                text-align: left;
+                            }
+
+                            /* Ensures rounded corners work properly */
+                            // td,
+                            // th {
+                            //     padding: 4px;
+                            // }
+
+                            // td:nth-child(even),
+                            // th:nth-child(even) {
+                            //     background-color: #f9f9f9;
+                            //     /* Light background for even columns */
+                            // }
+
+                            tr:hover {
+                                background-color: #3bff65;
+                                /* Yellow background for highlighted cells */
+                                // font-weight: bold;
+                                /* Bold text for emphasis */
+                            }
+
+                            .delete-btn {
+                                cursor: pointer;
+                            }
+                        }
+                    }
+
+                    .upload {
+                        width: 49%;
+                        display: flex;
+                        flex-direction: column;
+                        overflow: scroll;
+
+                    }
+                }
+            }
+        }
+    }
+}

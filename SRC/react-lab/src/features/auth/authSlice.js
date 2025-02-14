@@ -133,9 +133,12 @@ const authSlice = createSlice({
                 state.token = null;
                 state.isAuthenticated = false;
                 state.error = null;
-            })
+                state.loading = false;
+           })
             .addCase(logout.rejected, (state, action) => {
                 state.error = action.payload;
+                console.log("check logout failed")
+
             });
     }
 });
