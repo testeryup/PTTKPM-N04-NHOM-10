@@ -53,7 +53,8 @@ export const createOrder = async (req, res) => {
             items: orderItems,
             total,
             status: 'processing',
-            paymentStatus: 'completed'
+            paymentStatus: 'completed',
+            createdAt: new Date()
         }, { session });
 
         if (!order.insertedId) {

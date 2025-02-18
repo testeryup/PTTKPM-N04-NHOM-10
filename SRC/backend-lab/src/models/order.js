@@ -47,4 +47,5 @@ const orderSchema = new mongoose.Schema({
 });
 orderSchema.index({ buyer: 1, _id: -1 });
 orderSchema.index({ 'items.sku': 1 });
+
 export default mongoose.model('Order', orderSchema);

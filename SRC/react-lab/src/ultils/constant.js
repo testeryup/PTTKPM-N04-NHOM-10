@@ -23,5 +23,7 @@ export const path = {
     ORDERS: '/orders',
     VIEWORDER: '/orders/:orderId',
     CHECKOUT_SUCCESS: '/order-success',
-    SUPPORT: '/support'
+    SUPPORT: '/support',
+    TOPUP: '/topup',
+    ABOUT: '/about'
 }

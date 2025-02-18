@@ -40,6 +40,14 @@ export const getOrderById = (id) => {
 export const getOrders = ({page, limit, status='all'}) => {
     return api.get(`/api/orders?page=${page}&limit=${limit}&status=${status}`);
 }
+
+export const getUserBalance = () => {
+    return api.get(`/api/user/balance`);
+}
+
+export const createPaymentLink = (amount) => {
+    return api.post('/api/transactions/topup', {amount})
+}
 const userService = {
     getUserProfile, getCategory, createOrUpdateProduct, getProducts, userGetProductById, getSkuNames
 }

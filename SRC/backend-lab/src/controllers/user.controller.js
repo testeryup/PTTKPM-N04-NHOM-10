@@ -28,3 +28,20 @@ export const updateUserProfile = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const getUserBalance = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    if(!userId) {
+      throw new Error("No user found")
+    }
+    const user = await User.findById(userId).select('balance');
+    res.status(200).json({
+      ok: 1,
+      data: user.balance
+    });
+
+  } catch (error) {
+    res.status(500).json({ok: 0, message: error.message})
+  }
+}

@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import Product from '../models/product.js';
 import SKU from '../models/sku.js';
 import Order from '../models/order.js';
+
 export const getAllProductWithAllImages = async (req, res) => {
     try {
         const { id } = req.user;
@@ -102,12 +103,12 @@ export const deleteProduct = async (req, res) => {
         }
 
         // Delete associated SKUs
-        await SKU.deleteMany({ 
-            product: product._id 
+        await SKU.deleteMany({
+            product: product._id
         }).session(session);
 
         await session.commitTransaction();
-        
+
         return res.status(200).json({
             errCode: 0,
             message: "Successfully deleted product"
@@ -160,7 +161,7 @@ export const getProductById = async (req, res) => {
                 $limit: 1
             }
         ]);
-        if(product.length > 0){
+        if (product.length > 0) {
             return res.status(200).json({
                 errCode: 0,
                 data: product[0]
@@ -170,7 +171,7 @@ export const getProductById = async (req, res) => {
             errCode: 1,
             message: 'Product not found'
         });
-        
+
     } catch (error) {
         return res.status(500).json(error);
     }
@@ -389,4 +390,693 @@ export const getSellerOrders = async (req, res) => {
             message: error.message || 'Internal server error'
         });
     }
+};
+
+export const getOrderDetail = async (req, res) => {
+    try {
+        const orderId = new mongoose.Types.ObjectId(req.params.orderId);
+        const sellerId = new mongoose.Types.ObjectId(req.user.id);
+
+        const order = await Order.aggregate([
+            // Match the specific order
+            {
+                $match: {
+                    _id: orderId
+                }
+            },
+            // Lookup SKUs with product details
+            {
+                $lookup: {
+                    from: 'skus',
+                    localField: 'items.sku',
+                    foreignField: '_id',
+                    pipeline: [
+                        {
+                            $lookup: {
+                                from: 'products',
+                                localField: 'product',
+                                foreignField: '_id',
+                                as: 'productDetails'
+                            }
+                        },
+                        {
+                            $unwind: '$productDetails'
+                        },
+                        {
+                            $match: {
+                                'productDetails.seller': sellerId
+                            }
+                        },
+                        {
+                            $project: {
+                                _id: 1,
+                                name: 1,
+                                productName: '$productDetails.name',
+                                price: 1
+                            }
+                        }
+                    ],
+                    as: 'skuDetails'
+                }
+            },
+            // Lookup inventories (sold accounts)
+            {
+                $lookup: {
+                    from: 'inventories',
+                    let: {
+                        skuIds: '$skuDetails._id',
+                        orderId: '$_id'
+                    },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $and: [
+                                        { $in: ['$sku', '$$skuIds'] },
+                                        { $eq: ['$order', '$$orderId'] },
+                                        { $eq: ['$seller', sellerId] }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            $project: {
+                                _id: 1,
+                                sku: 1,
+                                credentials: 1,
+                                status: 1,
+                                createdAt: 1
+                            }
+                        }
+                    ],
+                    as: 'inventoryDetails'
+                }
+            },
+            // Lookup buyer details
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'buyer',
+                    foreignField: '_id',
+                    pipeline: [
+                        {
+                            $project: {
+                                _id: 1,
+                                username: 1,
+                                email: 1
+                            }
+                        }
+                    ],
+                    as: 'buyerDetails'
+                }
+            },
+            {
+                $unwind: '$buyerDetails'
+            },
+            // Final projection
+            {
+                $project: {
+                    _id: 0,
+                    orderId: '$_id',
+                    buyer: '$buyerDetails',
+                    total: 1,
+                    status: 1,
+                    paymentStatus: 1,
+                    paymentMethod: 1,
+                    createdAt: {
+                        $dateToString: {
+                            date: { $toDate: "$_id" },
+                            format: "%Y-%m-%dT%H:%M:%S.%LZ"
+                        }
+                    },
+                    items: {
+                        $map: {
+                            input: '$items',
+                            as: 'item',
+                            in: {
+                                skuDetails: {
+                                    $let: {
+                                        vars: {
+                                            skuInfo: {
+                                                $first: {
+                                                    $filter: {
+                                                        input: '$skuDetails',
+                                                        as: 'sku',
+                                                        cond: { $eq: ['$$sku._id', '$$item.sku'] }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        in: '$$skuInfo'
+                                    }
+                                },
+                                quantity: '$$item.quantity',
+                                price: '$$item.price',
+                                soldAccounts: {
+                                    $filter: {
+                                        input: '$inventoryDetails',
+                                        as: 'inv',
+                                        cond: { $eq: ['$$inv.sku', '$$item.sku'] }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        ]).allowDiskUse(false);
+
+        // Check if order exists and seller has items in it
+        if (!order || order.length === 0 || !order[0].items.some(item => item.skuDetails)) {
+            return res.status(404).json({
+                errCode: 1,
+                message: 'Order not found or unauthorized'
+            });
+        }
+
+        // Filter out items that don't belong to the seller
+        const sellerOrder = order[0];
+        sellerOrder.items = sellerOrder.items.filter(item => item.skuDetails);
+
+        return res.status(200).json({
+            errCode: 0,
+            message: 'Get order detail successfully',
+            data: sellerOrder
+        });
+
+    } catch (error) {
+        console.error('Error in getOrderDetail:', error);
+        return res.status(500).json({
+            errCode: 1,
+            message: error.message || 'Internal server error'
+        });
+    }
+};
+
+export const createRefundTicket = async (req, res) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+        const orderId = new mongoose.Types.ObjectId(req.params.orderId);
+        const sellerId = new mongoose.Types.ObjectId(req.user.id);
+        const { reason } = req.body;
+
+        // 1. Get order and validate
+        const order = await Order.findOne({
+            _id: orderId,
+            status: 'completed',
+            paymentStatus: 'completed'
+        }).session(session);
+
+        if (!order) {
+            throw new Error('Order not found or cannot be refunded');
+        }
+
+        // 2. Verify seller owns items in the order
+        const sellerItems = await SKU.aggregate([
+            {
+                $match: {
+                    _id: { $in: order.items.map(item => item.sku) }
+                }
+            },
+            {
+                $lookup: {
+                    from: 'products',
+                    localField: 'product',
+                    foreignField: '_id',
+                    pipeline: [
+                        {
+                            $match: { seller: sellerId }
+                        }
+                    ],
+                    as: 'product'
+                }
+            }
+        ]).session(session);
+
+        if (!sellerItems.length) {
+            throw new Error('No items found for this seller in the order');
+        }
+
+        // 3. Calculate refund amount for seller's items
+        const refundAmount = order.items.reduce((total, item) => {
+            const isSellersItem = sellerItems.some(sku =>
+                sku._id.equals(item.sku) && sku.product.length > 0
+            );
+            return total + (isSellersItem ? item.price * item.quantity : 0);
+        }, 0);
+
+        // 4. Create refund transaction
+        const [transaction] = await Transaction.create([{
+            user: order.buyer,
+            order: orderId,
+            amount: refundAmount,
+            type: 'refund',
+            status: 'completed',
+            metadata: {
+                reason,
+                seller: sellerId,
+                items: sellerItems.map(sku => sku._id)
+            }
+        }], { session });
+
+        // 5. Update user balance
+        await User.findByIdAndUpdate(order.buyer, {
+            $inc: { balance: refundAmount }
+        }).session(session);
+
+        // 6. Update order status
+        await Order.findByIdAndUpdate(orderId, {
+            status: 'refunded',
+            $push: {
+                refunds: {
+                    transactionId: transaction._id,
+                    seller: sellerId,
+                    amount: refundAmount,
+                    reason,
+                    items: sellerItems.map(sku => sku._id)
+                }
+            }
+        }).session(session);
+
+        // 7. Update inventory status
+        await Inventory.updateMany(
+            {
+                order: orderId,
+                sku: { $in: sellerItems.map(sku => sku._id) }
+            },
+            {
+                status: 'refunded'
+            }
+        ).session(session);
+
+        await session.commitTransaction();
+
+        return res.status(200).json({
+            errCode: 0,
+            message: 'Refund processed successfully',
+            data: {
+                refundId: transaction._id,
+                amount: refundAmount
+            }
+        });
+
+    } catch (error) {
+        await session.abortTransaction();
+        return res.status(500).json({
+            errCode: 1,
+            message: error.message || 'Failed to process refund'
+        });
+    } finally {
+        session.endSession();
+    }
+};
+
+export const getDashboardStats = async (req, res) => {
+    try {
+        const sellerId = new mongoose.Types.ObjectId(req.user.id);
+
+        const now = new Date();
+        const offset = now.getTimezoneOffset(); // Get local timezone offset in minutes
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        today.setMinutes(today.getMinutes() - offset); // Adjust for timezone
+
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+
+        const weekStart = new Date(today);
+        weekStart.setDate(weekStart.getDate() - 7);
+
+        const monthStart = new Date(today);
+        monthStart.setMonth(monthStart.getMonth() - 1);
+        // Main aggregation pipeline
+        const stats = await Order.aggregate([
+            // Join with SKUs and Products
+            {
+                $lookup: {
+                    from: 'skus',
+                    let: { orderSkus: '$items.sku' },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $in: ['$_id', '$$orderSkus'] }
+                            }
+                        },
+                        {
+                            $lookup: {
+                                from: 'products',
+                                localField: 'product',
+                                foreignField: '_id',
+                                pipeline: [
+                                    {
+                                        $match: { seller: sellerId }
+                                    }
+                                ],
+                                as: 'product'
+                            }
+                        },
+                        {
+                            $match: {
+                                'product': { $ne: [] }
+                            }
+                        }
+                    ],
+                    as: 'sellerSkus'
+                }
+            },
+            // Only include orders with seller's items
+            {
+                $match: {
+                    'sellerSkus': { $ne: [] },
+                    status: 'completed'
+                }
+            },
+            // Create different time period stats
+            {
+                $facet: {
+                    today: [
+                        {
+                            $match: {
+                                updatedAt: {
+                                    $gte: today,
+                                    $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000)
+                                }
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: null,
+                                revenue: { $sum: '$total' },
+                                orders: { $sum: 1 },
+                                customers: { $addToSet: '$buyer' }
+                            }
+                        }
+                    ],
+                    yesterday: [
+                        {
+                            $match: {
+                                updatedAt: {
+                                    $gte: yesterday,
+                                    $lt: today
+                                }
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: null,
+                                revenue: { $sum: '$total' },
+                                orders: { $sum: 1 }
+                            }
+                        }
+                    ],
+                    week: [
+                        {
+                            $match: {
+                                updatedAt: { $gte: weekStart }
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: null,
+                                revenue: { $sum: '$total' },
+                                orders: { $sum: 1 }
+                            }
+                        }
+                    ],
+                    month: [
+                        {
+                            $match: {
+                                updatedAt: { $gte: monthStart }
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: null,
+                                revenue: { $sum: '$total' },
+                                orders: { $sum: 1 }
+                            }
+                        }
+                    ],
+                    // Recent orders
+                    recentOrders: [
+                        {
+                            $sort: { updatedAt: -1 }
+                        },
+                        {
+                            $limit: 5
+                        },
+                        {
+                            $lookup: {
+                                from: 'users',
+                                localField: 'buyer',
+                                foreignField: '_id',
+                                as: 'buyer'
+                            }
+                        },
+                        {
+                            $unwind: '$buyer'
+                        },
+                        {
+                            $project: {
+                                orderId: '$_id',
+                                buyerName: '$buyer.username',
+                                total: 1,
+                                status: 1,
+                                updatedAt: 1
+                            }
+                        }
+                    ],
+                    // Daily sales chart data
+                    salesChart: [
+                        {
+                            $match: {
+                                updatedAt: { $gte: monthStart }
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: {
+                                    $dateToString: {
+                                        format: '%Y-%m-%d',
+                                        date: '$updatedAt'
+                                    }
+                                },
+                                sales: { $sum: '$total' },
+                                orders: { $sum: 1 }
+                            }
+                        },
+                        { $sort: { '_id': 1 } }
+                    ]
+                }
+            }
+        ]);
+
+        // Get top products
+        const topProducts = await SKU.aggregate([
+            {
+                $lookup: {
+                    from: 'products',
+                    localField: 'product',
+                    foreignField: '_id',
+                    pipeline: [
+                        { $match: { seller: sellerId } }
+                    ],
+                    as: 'product'
+                }
+            },
+            {
+                $match: {
+                    'product': { $ne: [] }
+                }
+            },
+            {
+                $sort: { 'sales.revenue': -1 }
+            },
+            {
+                $limit: 3
+            },
+            {
+                $project: {
+                    id: '$_id',
+                    name: { $arrayElemAt: ['$product.name', 0] },
+                    sku: '$name',
+                    soldCount: '$sales.count',
+                    revenue: '$sales.revenue'
+                }
+            }
+        ]);
+
+        console.log("check stats:", stats);
+        // Format response data
+        const formatMetric = (current, previous) => ({
+            value: current || 0,
+            change: previous ? ((current - previous) / previous * 100).toFixed(1) : 0
+        });
+
+        const todayStats = stats[0].today[0] || { revenue: 0, orders: 0, customers: [] };
+        const yesterdayStats = stats[0].yesterday[0] || { revenue: 0, orders: 0 };
+        const weekStats = stats[0].week[0] || { revenue: 0, orders: 0 };
+        const monthStats = stats[0].month[0] || { revenue: 0, orders: 0 };
+
+        const salesChartData = await generateTimelineSeries(stats[0].salesChart, monthStart, today);
+
+        const response = {
+            revenue: {
+                today: todayStats.revenue,
+                yesterday: yesterdayStats.revenue,
+                week: weekStats.revenue,
+                month: monthStats.revenue,
+                change: formatMetric(todayStats.revenue, yesterdayStats.revenue).change
+            },
+            orders: {
+                today: todayStats.orders,
+                yesterday: yesterdayStats.orders,
+                week: weekStats.orders,
+                month: monthStats.orders,
+                change: formatMetric(todayStats.orders, yesterdayStats.orders).change
+            },
+            products: {
+                sold: weekStats.orders,
+                lastPeriod: yesterdayStats.orders,
+                change: formatMetric(weekStats.orders, yesterdayStats.orders).change,
+                inventory: await SKU.countDocuments({
+                    'product.seller': sellerId,
+                    status: 'available'
+                })
+            },
+            customers: {
+                new: todayStats.customers?.length || 0,
+                lastPeriod: yesterdayStats.orders,
+                change: formatMetric(todayStats.customers?.length || 0, yesterdayStats.orders).change,
+                returning: await Order.countDocuments({
+                    buyer: { $in: todayStats.customers || [] },
+                    updatedAt: { $lt: today }
+                })
+            },
+            recentOrders: stats[0].recentOrders,
+            topProducts,
+            salesChart: {
+                today: salesChartData.today,
+                week: salesChartData.week,
+                month: salesChartData.month
+            }
+        };
+
+        return res.status(200).json({
+            errCode: 0,
+            message: 'Dashboard statistics retrieved successfully',
+            data: response
+        });
+
+    } catch (error) {
+        console.error('Error in getDashboardStats:', error);
+        return res.status(500).json({
+            errCode: 1,
+            message: error.message || 'Internal server error'
+        });
+    }
+};
+
+// Helper function to generate timeline series with empty values for missing dates
+const generateTimelineSeries = async (data, startDate, endDate) => {
+    const series = {
+        today: [],
+        week: [],
+        month: []
+    };
+
+    // Helper to format date to YYYY-MM-DD
+    const formatDate = (date) => {
+        return date.toISOString().split('T')[0];
+    };
+
+    // Generate hourly intervals for today
+    const todayStr = formatDate(new Date());
+    const todayStart = new Date(todayStr);
+    const todayEnd = new Date(todayStart);
+    todayEnd.setDate(todayEnd.getDate() + 1);
+
+    // Create empty hourly buckets
+    const hourlyData = {};
+    for (let h = 0; h < 24; h++) {
+        const time = `${h.toString().padStart(2, '0')}:00`;
+        hourlyData[time] = 0;
+    }
+
+    console.log("hourlyData 1", hourlyData);
+    // If we have data for today, aggregate it by hour
+    if (data.some(d => d._id === todayStr)) {
+        const hourlyStats = await Order.aggregate([
+            {
+                $match: {
+                    updatedAt: {
+                        $gte: todayStart,
+                        $lt: todayEnd
+                    },
+                    'sellerSkus': { $ne: [] },
+                    status: 'completed'
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        hour: { $hour: '$updatedAt' }
+                    },
+                    sales: { $sum: '$total' }
+                }
+            }
+        ]);
+
+        // Fill in the actual hourly data
+        hourlyStats.forEach(stat => {
+            const hour = stat._id.hour.toString().padStart(2, '0');
+            hourlyData[`${hour}:00`] = stat.sales;
+        });
+    }
+
+    // Convert the hourly data object to array format
+    series.today = Object.entries(hourlyData).map(([time, sales]) => ({
+        time,
+        sales
+    }));
+
+    // Generate daily intervals for week
+    const weekDays = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+    for (let i = 6; i >= 0; i--) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        const dateStr = formatDate(date);
+        const entry = data.find(d => d._id === dateStr);
+
+        series.week.push({
+            time: weekDays[date.getDay()],
+            sales: entry?.sales || 0
+        });
+    }
+
+    // Generate weekly intervals for month
+    const weeks = Math.ceil((endDate - startDate) / (7 * 24 * 60 * 60 * 1000));
+    for (let i = 0; i < weeks; i++) {
+        const weekStart = new Date(startDate);
+        weekStart.setDate(weekStart.getDate() + (i * 7));
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekEnd.getDate() + 6);
+
+        const weekSales = data
+            .filter(d => {
+                const date = new Date(d._id);
+                return date >= weekStart && date <= weekEnd;
+            })
+            .reduce((sum, d) => sum + d.sales, 0);
+
+        series.month.push({
+            time: `${weekStart.getDate()}/${weekStart.getMonth() + 1}`,
+            sales: weekSales
+        });
+    }
+
+    return series;
 };

@@ -15,7 +15,9 @@ import {
     faSignOutAlt,
     faSignInAlt,
     faChevronDown,
-    faShieldAlt
+    faShieldAlt,
+    faBox,
+    faUsers
 } from '@fortawesome/free-solid-svg-icons';
 // Add all icons to the library
 library.add(fab, far, fas, faHeadset)
@@ -31,5 +33,7 @@ library.add(
     faSignOutAlt,
     faSignInAlt,
     faChevronDown,
-    faShieldAlt
+    faShieldAlt,
+    faBox,
+    faUsers
 );

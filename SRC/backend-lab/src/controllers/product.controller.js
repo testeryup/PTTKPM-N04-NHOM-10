@@ -33,7 +33,8 @@ export const upsertProduct = async (req, res) => {
                 description,
                 category,
                 subcategory,
-                seller: req.user.id
+                seller: req.user.id,
+                createdAt: new Date()
             },
             {
                 upsert: true,

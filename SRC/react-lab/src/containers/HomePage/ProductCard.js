@@ -41,8 +41,8 @@ export default function ProductCard({ product }) {
                         </div>
                     </div>
                     <div className='add-to-cart'>
-                        <button className='btn-add-cart'>
-                            Thêm vào giỏ hàng
+                        <button className='btn-add-cart' onClick={() => handleGetProduct(product._id)}>
+                            Xem ngay
                         </button>
                     </div>
                 </div>

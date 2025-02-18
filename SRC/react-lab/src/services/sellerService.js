@@ -37,10 +37,14 @@ export const reportOrder = () => {
 }
 
 export const getOrderDetail = (orderId) => {
-    return api.get(`/api/seller/orders/${orderId}/detail`);
+    return api.get(`/api/seller/orders/${orderId}`);
 };
+
+export const getSellerStats = () => {
+    return api.get(`/api/seller/dashboard/stats`);
+}
 const sellerService = {
-    getAllProducts, deleteProduct, uploadInventory, getInventoryList, deleteInventoryById, getOrders
+    getAllProducts, deleteProduct, uploadInventory, getInventoryList, deleteInventoryById, getOrders, getSellerStats
 }
 
 export default sellerService;

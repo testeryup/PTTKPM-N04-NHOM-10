@@ -157,7 +157,7 @@ export default function SellerOrders() {
                     rows={4}
                 />
                 <div className="modal-actions">
-                    <button 
+                    <button
                         className="confirm-btn"
                         onClick={() => handleReport(selectedOrder?.orderId)}
                         disabled={!reportReason.trim()}
@@ -176,28 +176,80 @@ export default function SellerOrders() {
         <div className={`modal ${isDetailModalOpen ? 'show' : ''}`}>
             <div className="modal-content detail-modal">
                 <div className="modal-header">
-                    <h3>Chi tiết đơn hàng #{orderDetail?.orderId}</h3>
+                    <div className="header-content">
+                        <h3>Chi tiết đơn hàng #{orderDetail?.orderId}</h3>
+                        <span className={`status-badge ${orderStatus[orderDetail?.status]?.color}`}>
+                            <i className={orderStatus[orderDetail?.status]?.icon}></i>
+                            {orderStatus[orderDetail?.status]?.label}
+                        </span>
+                    </div>
                     <button className="close-btn" onClick={() => setIsDetailModalOpen(false)}>
                         <i className="fas fa-times"></i>
                     </button>
                 </div>
                 {orderDetail && (
                     <div className="detail-content">
-                        <div className="detail-section">
-                            <h4>Thông tin khách hàng</h4>
-                            <p><strong>Email:</strong> {orderDetail.customer.email}</p>
-                            <p><strong>Ngày đặt:</strong> {new Date(orderDetail.createdAt).toLocaleString('vi-VN')}</p>
+                        <div className="info-grid">
+                            <div className="detail-section customer-info">
+                                <h4><i className="fas fa-user"></i> Thông tin khách hàng</h4>
+                                <div className="info-item">
+                                    <span className="label">Email:</span>
+                                    <span className="value">{orderDetail.buyer.email}</span>
+                                </div>
+                                <div className="info-item">
+                                    <span className="label">Username:</span>
+                                    <span className="value">{orderDetail.buyer.username}</span>
+                                </div>
+                                <div className="info-item">
+                                    <span className="label">Ngày đặt:</span>
+                                    <span className="value">{new Date(orderDetail.createdAt).toLocaleString('vi-VN')}</span>
+                                </div>
+                            </div>
+
+                            <div className="detail-section order-info">
+                                <h4><i className="fas fa-info-circle"></i> Thông tin đơn hàng</h4>
+                                <div className="info-item">
+                                    <span className="label">Tổng tiền:</span>
+                                    <span className="value highlight">{formatCurrency(orderDetail.total)}₫</span>
+                                </div>
+                                <div className="info-item">
+                                    <span className="label">Trạng thái thanh toán:</span>
+                                    <span className={`value payment-status ${orderDetail.paymentStatus}`}>
+                                        {orderDetail.paymentStatus === 'completed' ? 'Đã thanh toán' : 'Chưa thanh toán'}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
-                        <div className="detail-section">
-                            <h4>Tài khoản đã bán</h4>
-                            <div className="accounts-list">
-                                {orderDetail.accounts.map((account, index) => (
-                                    <div key={index} className="account-item">
-                                        <p><strong>Username:</strong> {account.username}</p>
-                                        <p><strong>Password:</strong> {account.password}</p>
-                                        {account.extra && (
-                                            <p><strong>Thông tin thêm:</strong> {account.extra}</p>
-                                        )}
+
+                        <div className="detail-section products-section">
+                            <h4><i className="fas fa-shopping-cart"></i> Sản phẩm đã mua</h4>
+                            <div className="products-list">
+                                {orderDetail.items.map((item, index) => (
+                                    <div key={index} className="product-card">
+                                        <div className="product-info">
+                                            <h5>{item.skuDetails.productName}</h5>
+                                            <span className="sku-name">{item.skuDetails.name}</span>
+                                            <span className="price">{formatCurrency(item.skuDetails.price)}₫</span>
+                                        </div>
+
+                                        <div className="accounts-section">
+                                            <h6>Tài khoản:</h6>
+                                            {item.soldAccounts.map((account, idx) => {
+                                                const [username, password] = account.credentials.split('|');
+                                                return (
+                                                    <div key={idx} className="account-item">
+                                                        <div className="credential">
+                                                            <span className="label">Username:</span>
+                                                            <span className="value">{username}</span>
+                                                        </div>
+                                                        <div className="credential">
+                                                            <span className="label">Password:</span>
+                                                            <span className="value">{password}</span>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
                                     </div>
                                 ))}
                             </div>
@@ -275,7 +327,9 @@ export default function SellerOrders() {
                             {filter.label}
                         </button>
                     ))}
+                    <Pagination />
                 </div>
+
             </div>
 
             <div className="table-container">
@@ -321,7 +375,7 @@ export default function SellerOrders() {
                                         >
                                             <i className="fas fa-eye"></i>
                                         </button>
-                                        {order.status === 'completed' && (
+                                        {/* {order.status === 'completed' && (
                                             <button
                                                 className="action-btn refund"
                                                 onClick={() => {
@@ -342,7 +396,7 @@ export default function SellerOrders() {
                                             title="Báo cáo"
                                         >
                                             <i className="fas fa-flag"></i>
-                                        </button>
+                                        </button> */}
                                     </div>
                                 </td>
                             </tr>
@@ -351,7 +405,7 @@ export default function SellerOrders() {
                 </table>
             </div>
 
-            <Pagination />
+
             <RefundModal />
             <ReportModal />
             <OrderDetailModal />

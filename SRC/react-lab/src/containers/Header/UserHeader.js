@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { path } from "../../ultils";
 import { logout } from "../../features/auth/authSlice";
 import CartPreview from './User/CartPreview';
-
+import { formatCurrency } from '../../ultils';
 export default function UserHeader() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -72,7 +72,14 @@ export default function UserHeader() {
                                 <li className='route'>Tất cả sản phẩm</li>
                                 <li className='route'>Sản phẩm mua nhiều</li>
                                 <li className='route'>Sản phẩm khuyến mại</li>
-                                <li className='route'>Nạp tiền</li>
+                                <li className='route'><Link to="/topup">
+                                    {/* <FontAwesomeIcon icon="cog" /> */}
+                                    Nạp tiền
+                                </Link></li>
+                                <li className='route'><Link to="/about">
+                                    {/* <FontAwesomeIcon icon="cog" /> */}
+                                    Về chúng tôi
+                                </Link></li>
                             </ul>
                         </div>
                     </div>
@@ -116,7 +123,7 @@ export default function UserHeader() {
                                                     </Link>
                                                 </div>
                                             </div>
-                                            <div className='balance-section'><span>{profile.balance >= 0 ? profile.balance : 'not defined!'}</span><FontAwesomeIcon icon="fa-solid fa-wallet" /></div>
+                                            <div className='balance-section'><span>{profile.balance >= 0 ? formatCurrency(profile.balance) : 'not defined!'}</span><FontAwesomeIcon icon="fa-solid fa-wallet" /></div>
                                         </div>
 
                                     </div>

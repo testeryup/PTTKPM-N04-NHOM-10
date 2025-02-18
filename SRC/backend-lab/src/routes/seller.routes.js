@@ -8,5 +8,7 @@ router.get('/products', verifyToken, requireRole(['seller', 'admin']), sellerCon
 router.delete('/products/:id', verifyToken, requireRole(['seller', 'admin']), sellerController.deleteProduct); 
 router.get('/products/:id', verifyToken, requireRole(['seller', 'admin']), sellerController.getProductById); 
 router.get('/orders', verifyToken, requireRole(['seller', 'admin']), sellerController.getSellerOrders); 
-
+router.get('/orders/:orderId', verifyToken, requireRole('seller', 'admin'), sellerController.getOrderDetail);
+router.get('/orders/refund/orderId', verifyToken, requireRole(['seller', 'admin']), sellerController.createRefundTicket)
+router.get('/dashboard/stats', verifyToken, requireRole(['seller']), sellerController.getDashboardStats);
 export default router;

@@ -10,10 +10,15 @@ const transactionSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Order'
     },
+    orderCode: {
+        type: Number,
+        unique: true,
+        default: null
+    },
     amount: Number,
     type: {
         type: String,
-        enum: ['purchase', 'refund', 'withdrawal'],
+        enum: ['purchase', 'refund', 'withdrawal', 'deposit'],
         required: true
     },
     status: {

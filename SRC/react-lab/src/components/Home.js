@@ -5,18 +5,29 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import './Home.scss';
 import ProductSection from "../containers/HomePage/ProductSection";
-
+import Footer from "./Footer";
 export default function Home() {
     const settings = {
         dots: true,
         infinite: true,
-        speed: 500,
+        speed: 800,
         slidesToShow: 1,
         slidesToScroll: 1,
         autoplay: true,
-        autoplaySpeed: 3000,
-        fade: true, // Enable fade transition
-        cssEase: 'linear', // Change easing function
+        autoplaySpeed: 4000,
+        fade: true,
+        cssEase: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        beforeChange: (current, next) => {
+            const items = document.querySelectorAll('.banner-item');
+            items[current]?.classList.add('slide-out');
+            items[next]?.classList.add('slide-in');
+        },
+        afterChange: (current) => {
+            const items = document.querySelectorAll('.banner-item');
+            items.forEach(item => {
+                item.classList.remove('slide-out', 'slide-in');
+            });
+        }
     };
     return (
         <div className="home-container">
@@ -40,7 +51,25 @@ export default function Home() {
                     </div>
                 </Slider>
             </div>
+            <div className="features-section">
+                <div className="feature">
+                    <i className="fas fa-shield-alt"></i>
+                    <h3>Bảo mật tuyệt đối</h3>
+                    <p>Thanh toán an toàn 100%</p>
+                </div>
+                <div className="feature">
+                    <i className="fas fa-bolt"></i>
+                    <h3>Tức thì</h3>
+                    <p>Kích hoạt tài khoản ngay</p>
+                </div>
+                <div className="feature">
+                    <i className="fas fa-headset"></i>
+                    <h3>Hỗ trợ 24/7</h3>
+                    <p>Luôn sẵn sàng phục vụ</p>
+                </div>
+            </div>
             <ProductSection></ProductSection>
+            <Footer></Footer>
         </div>
     )
 }

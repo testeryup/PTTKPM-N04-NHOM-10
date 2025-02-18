@@ -113,7 +113,12 @@ export default function InventoryModal({ isOpen, onClose, productId }) {
     const handleUpload = async () => {
         console.log("check inventory to upload:", formData.inventoryDataToUpload);
         const dataToUpload = parseAccounts(formData.inventoryDataToUpload);
+        if(!productId || !formData.selectedSKU || !dataToUpload){
+            toast.error("Vui lòng nhập thông tin hợp lệ");
+            return;
+        }
         try {
+            
             const result = await uploadInventory({
                 productId,
                 skuId: formData.selectedSKU,
@@ -228,7 +233,7 @@ export default function InventoryModal({ isOpen, onClose, productId }) {
                             </div>
                         </div>
                         <div className="footer">
-                            <button className="upload-new-inventory" onClick={handleUpload}>Thêm</button>
+                            <button className="upload-new-inventory" onClick={handleUpload}>Thêm tài khoản</button>
                         </div>
                     </div>
                 </div>

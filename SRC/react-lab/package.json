@@ -25,6 +25,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@payos/payos-checkout": "^1.0.8",
     "@reduxjs/toolkit": "2.5.0",
     "axios": "1.7.9",
     "dotenv": "16.4.7",
@@ -36,6 +37,7 @@
     "react-router-dom": "7.1.1",
     "react-scripts": "^5.0.1",
     "react-slick": "0.30.3",
+    "recharts": "^2.15.1",
     "redux-persist": "6.0.0",
     "slick-carousel": "1.8.1"
   },
