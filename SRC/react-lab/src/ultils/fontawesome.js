@@ -17,7 +17,21 @@ import {
     faChevronDown,
     faShieldAlt,
     faBox,
-    faUsers
+    faUsers,
+    faMoneyBillWave,
+    faChevronLeft,
+    faChevronRight,
+    faSearch,
+    faSync,
+    faEdit,
+    faBan,
+    faUnlock,
+    faSortUp,
+    faSortDown,
+    faUndo, 
+    faCheck,
+    faTimes,
+    faEye
 } from '@fortawesome/free-solid-svg-icons';
 // Add all icons to the library
 library.add(fab, far, fas, faHeadset)
@@ -35,5 +49,19 @@ library.add(
     faChevronDown,
     faShieldAlt,
     faBox,
-    faUsers
+    faUsers,
+    faMoneyBillWave,
+    faChevronLeft,
+    faChevronRight,
+    faSearch,
+    faSync,
+    faEdit,
+    faBan,
+    faUnlock,
+    faSortUp,
+    faSortDown,
+    faUndo, 
+    faCheck,
+    faTimes,
+    faEye
 );

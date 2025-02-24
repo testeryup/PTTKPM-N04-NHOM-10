@@ -56,20 +56,20 @@ export default function Login() {
             <div className="login-container">
 
                 <div className="login-box">
-                    <h2>Welcome back</h2>
-                    <div className="detail">Please enter your details</div>
+                    <h2>Xin chào</h2>
+                    <div className="detail">Vui lòng nhập thông tin của bạn</div>
                     <div className="credential">
                         <div className="email-section form-group">
-                            <label htmlFor="email">Email</label>
-                            <input type="email" placeholder="Enter your email"
+                            <label htmlFor="email">Tài khoản</label>
+                            <input type="email" placeholder="Nhập email hoặc username"
                                 id="email"
                                 onChange={(event) => setEmail(event.target.value)}
                                 value={email}
                             ></input>
                         </div>
                         <div className="password-section form-group">
-                            <label htmlFor="password">Password</label>
-                            <input type="password" placeholder="Enter your password"
+                            <label htmlFor="password">Mật khẩu</label>
+                            <input type="password" placeholder="Nhập mật khẩu"
                                 id="password"
                                 onChange={(event) => setPassword(event.target.value)}
                                 value={password}
@@ -78,18 +78,18 @@ export default function Login() {
                     </div>
                     <div className="error-handler">
                         <span className="error-msg">{error ? error : ''}</span>
-                        <span className="forgot-password">Forgot password</span>
+                        <span className="forgot-password">Quên mật khẩu</span>
                     </div>
                     <button
                         className="btn-confirm"
                         onClick={handleLogin}
                         disabled={auth.loading}
                     >
-                        {auth.loading ? 'Logging in...' : 'Login now'}
+                        {auth.loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
                     </button>
                     <div className="sign-up-section">
-                        <span>Don't have an account? </span>
-                        <span className="sign-up" onClick={handleSignup}>Sign up now</span>
+                        <span>Không có tài khoản? </span>
+                        <span className="sign-up" onClick={handleSignup}>Đăng ký ngay</span>
                     </div>
                 </div>
             </div>

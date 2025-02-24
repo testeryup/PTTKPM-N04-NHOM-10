@@ -11,4 +11,7 @@ router.get('/orders', verifyToken, requireRole(['seller', 'admin']), sellerContr
 router.get('/orders/:orderId', verifyToken, requireRole('seller', 'admin'), sellerController.getOrderDetail);
 router.get('/orders/refund/orderId', verifyToken, requireRole(['seller', 'admin']), sellerController.createRefundTicket)
 router.get('/dashboard/stats', verifyToken, requireRole(['seller']), sellerController.getDashboardStats);
+
+router.post('/transactions/withdraw', verifyToken, requireRole(['seller']), sellerController.createWithdrawalRequest);
+router.get('/transactions', verifyToken, requireRole(['seller']), sellerController.getWidthdrawlRequests);
 export default router;

@@ -1,0 +1,280 @@
+.seller-payment {
+    padding: 1.5rem;
+
+    .payment-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+
+        h1 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+        }
+
+        .withdraw-btn {
+            padding: 0.75rem 1.5rem;
+            background: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+
+            &:hover {
+                background: #27ae60;
+            }
+        }
+    }
+
+    .stats-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s;
+    
+            &:hover {
+                transform: translateY(-2px);
+            }
+    
+            h3 {
+                color: #64748b;
+                font-size: 0.875rem;
+                margin-bottom: 0.5rem;
+            }
+    
+            p {
+                color: #2c3e50;
+                font-size: 1.5rem;
+                font-weight: 600;
+                margin-bottom: 0.25rem;
+            }
+    
+            span {
+                color: #64748b;
+                font-size: 0.875rem;
+            }
+    
+            // Color variants for different status cards
+            &:nth-child(1) {
+                border-top: 4px solid #3498db;
+            }
+    
+            &:nth-child(2) {
+                border-top: 4px solid #f1c40f;
+            }
+    
+            &:nth-child(3) {
+                border-top: 4px solid #2ecc71;
+            }
+    
+            &:nth-child(4) {
+                border-top: 4px solid #e74c3c;
+            }
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .stats-cards {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .filters-section {
+        margin-bottom: 1.5rem;
+
+        .filter-group {
+            display: flex;
+            gap: 1rem;
+
+            select {
+                padding: 0.75rem;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                background: white;
+                font-size: 0.9rem;
+                color: #2c3e50;
+                cursor: pointer;
+
+                &:focus {
+                    outline: none;
+                    border-color: #0a59cc;
+                }
+            }
+        }
+    }
+
+    .withdrawals-table {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        margin-bottom: 1.5rem;
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+
+            th, td {
+                padding: 1rem;
+                text-align: left;
+                border-bottom: 1px solid #e2e8f0;
+            }
+
+            th {
+                background: #f8f9fa;
+                font-weight: 600;
+                color: #2c3e50;
+            }
+
+            td {
+                color: #4a5568;
+            }
+
+            .status-badge {
+                padding: 0.25rem 0.75rem;
+                border-radius: 20px;
+                font-size: 0.85rem;
+                font-weight: 500;
+
+                &.pending {
+                    background: #fff3e0;
+                    color: #ef6c00;
+                }
+
+                &.completed {
+                    background: #e8f5e9;
+                    color: #2e7d32;
+                }
+
+                &.failed {
+                    background: #ffebee;
+                    color: #c62828;
+                }
+            }
+        }
+    }
+
+    .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+
+        .page-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+
+            &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            &:not(:disabled):hover {
+                border-color: #0a59cc;
+                color: #0a59cc;
+            }
+        }
+
+        .page-info {
+            color: #4a5568;
+            font-size: 0.9rem;
+        }
+    }
+
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+
+            h3 {
+                margin-bottom: 1.5rem;
+                color: #2c3e50;
+            }
+
+            .form-group {
+                margin-bottom: 1.5rem;
+
+                label {
+                    display: block;
+                    margin-bottom: 0.5rem;
+                    color: #4a5568;
+                }
+
+                input {
+                    width: 100%;
+                    padding: 0.75rem;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 8px;
+                    font-size: 0.9rem;
+
+                    &:focus {
+                        outline: none;
+                        border-color: #0a59cc;
+                    }
+                }
+            }
+
+            .modal-actions {
+                display: flex;
+                justify-content: flex-end;
+                gap: 1rem;
+
+                button {
+                    padding: 0.75rem 1.5rem;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    transition: all 0.2s;
+
+                    &:first-child {
+                        background: #2ecc71;
+                        color: white;
+                        border: none;
+
+                        &:hover {
+                            background: #27ae60;
+                        }
+                    }
+
+                    &:last-child {
+                        background: white;
+                        color: #2c3e50;
+                        border: 1px solid #e2e8f0;
+
+                        &:hover {
+                            background: #f8f9fa;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

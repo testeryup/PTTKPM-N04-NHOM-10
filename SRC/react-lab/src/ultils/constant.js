@@ -25,5 +25,6 @@ export const path = {
     CHECKOUT_SUCCESS: '/order-success',
     SUPPORT: '/support',
     TOPUP: '/topup',
-    ABOUT: '/about'
+    ABOUT: '/about',
+    ALL_PRODUCTS: '/products'
 }

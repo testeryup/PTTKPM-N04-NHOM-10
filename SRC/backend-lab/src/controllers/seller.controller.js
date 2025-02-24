@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 import Product from '../models/product.js';
 import SKU from '../models/sku.js';
 import Order from '../models/order.js';
+import User from '../models/user.js';
+import Transaction from '../models/transaction.js';
 
 export const getAllProductWithAllImages = async (req, res) => {
     try {
@@ -909,7 +911,6 @@ export const getDashboardStats = async (req, res) => {
             }
         ]);
 
-        console.log("check stats:", stats);
         // Format response data
         const formatMetric = (current, previous) => ({
             value: current || 0,
@@ -1006,7 +1007,6 @@ const generateTimelineSeries = async (data, startDate, endDate) => {
         hourlyData[time] = 0;
     }
 
-    console.log("hourlyData 1", hourlyData);
     // If we have data for today, aggregate it by hour
     if (data.some(d => d._id === todayStr)) {
         const hourlyStats = await Order.aggregate([
@@ -1079,4 +1079,178 @@ const generateTimelineSeries = async (data, startDate, endDate) => {
     }
 
     return series;
+};
+
+export const createWithdrawalRequest = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const user = await User.findById(userId);
+        if(!user || user.status !== 'active'){
+            throw new Error("User not found or suspended")
+        }
+        const amount = req.body.amount;
+        if(!amount){
+            return res.status(401).json({
+                errCode: 1,
+                message: 'Missing input parameter'
+            })
+        }
+
+
+        if(amount > user.amount){
+            throw new Error("Amount must be below the balance")
+        }
+
+        const transaction = await Transaction.create({
+            user: new mongoose.Types.ObjectId(userId),
+            amount: amount,
+            type: 'withdrawal',
+            status: 'pending'
+        });
+        if(transaction){
+            return res.status(200).json({
+                errCode: 0,
+                message: 'Created withdrawal successfully',
+                transaction
+            })
+        }
+        else{
+            console.log("transaction error:", transaction);
+            throw new Error("Something went wrong...");
+        }
+    } catch (error) {
+        return res.status(500).json({
+            errCode: 1,
+            message: error.message
+        })
+    }
+}
+
+export const getWidthdrawlRequests = async (req, res) => {
+    try {
+        const sellerId = new mongoose.Types.ObjectId(req.user.id);
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const status = req.query.status?.toLowerCase() || 'all';
+        const sortBy = req.query.sortBy || 'createdAt';
+        const sortOrder = req.query.sortOrder || 'desc';
+
+        // Build match condition
+        const matchCondition = {
+            user: sellerId,
+            type: 'withdrawal'
+        };
+
+        if (status !== 'all') {
+            matchCondition.status = status;
+        }
+
+        // Get total count for pagination
+        const totalRequests = await Transaction.countDocuments(matchCondition);
+
+        // Get withdrawal requests with pagination
+        const requests = await Transaction.aggregate([
+            {
+                $match: matchCondition
+            },
+            {
+                $addFields: {
+                    createdAtDate: { 
+                        $dateToString: { 
+                            format: "%Y-%m-%d %H:%M:%S",
+                            date: "$createdAt"
+                        }
+                    }
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    amount: 1,
+                    status: 1,
+                    createdAt: 1,
+                    createdAtDate: 1,
+                    'metadata.rejectionReason': 1
+                }
+            },
+            {
+                $sort: { [sortBy]: sortOrder === 'desc' ? -1 : 1 }
+            },
+            {
+                $skip: (page - 1) * limit
+            },
+            {
+                $limit: limit
+            }
+        ]);
+
+        // Get status counts
+        const statusCounts = await Transaction.aggregate([
+            {
+                $match: {
+                    user: sellerId,
+                    type: 'withdrawal'
+                }
+            },
+            {
+                $group: {
+                    _id: '$status',
+                    count: { $sum: 1 },
+                    totalAmount: { $sum: '$amount' }
+                }
+            }
+        ]);
+
+        // Calculate pagination metadata
+        const totalPages = Math.ceil(totalRequests / limit);
+        const hasNext = page * limit < totalRequests;
+        const hasPrev = page > 1;
+
+        // Format status statistics
+        const statusStats = {
+            all: {
+                count: statusCounts.reduce((sum, s) => sum + s.count, 0),
+                amount: statusCounts.reduce((sum, s) => sum + s.totalAmount, 0)
+            }
+        };
+        statusCounts.forEach(s => {
+            statusStats[s._id] = {
+                count: s.count,
+                amount: s.totalAmount
+            };
+        });
+
+        return res.status(200).json({
+            errCode: 0,
+            message: "Get withdrawal requests successfully",
+            data: {
+                requests,
+                pagination: {
+                    currentPage: page,
+                    totalPages,
+                    totalItems: totalRequests,
+                    itemsPerPage: limit,
+                    hasNext,
+                    hasPrev
+                },
+                filters: {
+                    status: {
+                        current: status,
+                        available: statusStats
+                    },
+                    sort: {
+                        by: sortBy,
+                        order: sortOrder
+                    }
+                }
+            }
+        });
+
+    } catch (error) {
+        console.error('Error in getWidthdrawlRequest:', error);
+        return res.status(500).json({
+            errCode: 1,
+            message: error.message || 'Internal server error'
+        });
+    }
 };

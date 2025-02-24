@@ -25,7 +25,7 @@ import OrderDetail from './Header/User/OrderDetail';
 import Support from './Header/User/Support';
 import Topup from './HomePage/Topup';
 import About from '../components/About';
-
+import AllProducts from '../components/AllProducts.js'
 import { Toaster } from 'react-hot-toast';
 
 import './App.scss';
@@ -141,6 +141,7 @@ export default function App() {
                 <Route path={path.ORDERS} element={<MyOrders></MyOrders>}></Route>
                 <Route path={path.SUPPORT} element={<Support></Support>}></Route>
                 <Route path={path.TOPUP} element={<Topup></Topup>}></Route>
+                <Route path="/products" element={<AllProducts />} />
                 <Route path="/about" element={<About />} />
                 {/* Catch-All Route */}
                 <Route path='*' element={<h1>404 - Page Not Found</h1>} />

@@ -1,0 +1,115 @@
+.products-page {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+
+    .filters-section {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        height: fit-content;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+        .search-bar {
+            position: relative;
+            margin-bottom: 1.5rem;
+
+            svg {
+                position: absolute;
+                left: 1rem;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #64748b;
+            }
+
+            input {
+                width: 100%;
+                padding: 0.75rem 1rem 0.75rem 2.5rem;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                font-size: 0.9rem;
+
+                &:focus {
+                    outline: none;
+                    border-color: #0a59cc;
+                    box-shadow: 0 0 0 3px rgba(10, 89, 204, 0.1);
+                }
+            }
+        }
+
+        .filter-group {
+            margin-bottom: 1.5rem;
+
+            h3 {
+                font-size: 1rem;
+                color: #1e293b;
+                margin-bottom: 0.5rem;
+            }
+
+            select {
+                width: 100%;
+                padding: 0.75rem;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                background-color: white;
+                font-size: 0.9rem;
+                color: #0f172a;
+                cursor: pointer;
+
+                &:focus {
+                    outline: none;
+                    border-color: #0a59cc;
+                }
+            }
+        }
+    }
+
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 2rem;
+        align-content: start;
+
+        .no-products {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 4rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+            svg {
+                font-size: 3rem;
+                color: #94a3b8;
+                margin-bottom: 1rem;
+            }
+
+            p {
+                color: #64748b;
+                font-size: 1.1rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 1024px) {
+    .products-page {
+        grid-template-columns: 250px 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .products-page {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+
+        .filters-section {
+            position: sticky;
+            top: 1rem;
+            z-index: 10;
+        }
+    }
+}

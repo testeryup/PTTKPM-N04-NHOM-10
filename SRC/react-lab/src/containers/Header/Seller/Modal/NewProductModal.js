@@ -344,9 +344,8 @@ export default function NewProductModal({ isOpen, onClose, categoriesList, mode 
                                 </div>
                             </div>
                         </div>
-                        <div className="footer">
-                            <button className="btn-save" onClick={handleSaveProduct}>{mode === 'create' ? 'Lưu thông tin' : 'Sửa thông tin'}</button>
-                        </div>
+                        <button className="btn-save" onClick={handleSaveProduct}>{mode === 'create' ? 'Lưu thông tin' : 'Sửa thông tin'}</button>
+
                     </div>
                 </div>
             </div>

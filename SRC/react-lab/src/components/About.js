@@ -32,19 +32,19 @@ const About = () => {
 
   const team = [
     {
-      name: "Nguyễn Văn A",
+      name: "Nguyễn Mạnh Đạt",
       role: "Founder & CEO",
-      image: "path_to_image_1",
+      image: require('../assets/entrepreneur-1.jpg'),
     },
     {
       name: "Trần Thị B",
       role: "Technical Director",
-      image: "path_to_image_2",
+      image: require('../assets/entrepreneur-2.jpg'),
     },
     {
       name: "Lê Văn C",
       role: "Customer Success Manager",
-      image: "path_to_image_3",
+      image: require('../assets/entrepreneur-3.jpg'),
     }
   ];
 

@@ -155,7 +155,7 @@ export const getProducts = async (req, res) => {
             {
                 $project: {
                     name: 1,
-                    // description: 1,
+                    description: 1,
                     category: 1,
                     subcategory: 1,
                     seller: 1,

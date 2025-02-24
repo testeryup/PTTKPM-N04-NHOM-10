@@ -21,6 +21,8 @@
             border-radius: 8px;
             transition: all 0.3s ease;
             width: 1200px;
+            max-height: 90vh;
+            overflow-y: auto;
 
             .header {
                 display: flex;
@@ -188,19 +190,16 @@
 
             }
 
-            .footer {
-                padding-top: 20px;
-
-                .btn-save {
-                    background-color: rgb(10, 89, 204);
-                    padding: 8px 64px;
-                    color: white;
-                    border: none;
-                    border-radius: 5px;
-                    outline: none;
-                    cursor: pointer;
-                    font-weight: 500;
-                }
+            .btn-save {
+                background-color: rgb(10, 89, 204);
+                padding: 8px 64px;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                outline: none;
+                cursor: pointer;
+                font-weight: 500;
+                margin-top: 20px;
             }
         }
     }

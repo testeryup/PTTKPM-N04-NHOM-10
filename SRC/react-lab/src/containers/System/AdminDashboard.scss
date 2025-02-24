@@ -1,0 +1,142 @@
+.admin-dashboard {
+    min-height: 100vh;
+    background-color: #f8f9fa;
+
+    .dashboard-container {
+        display: flex;
+        height: calc(100vh - 60px);
+    }
+
+    .sidebar {
+        width: 250px;
+        background: #fff;
+        box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+
+        &.collapsed {
+            width: 70px;
+
+            .sidebar-header {
+                padding: 1rem;
+                justify-content: center;
+
+                h2 {
+                    font-size: 1.5rem;
+                }
+            }
+
+            .nav-item {
+                padding: 1rem;
+                justify-content: center;
+
+                svg {
+                    margin: 0;
+                }
+            }
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #eee;
+
+            h2 {
+                margin: 0;
+                color: #0a59cc;
+                font-size: 1.25rem;
+            }
+
+            .toggle-btn {
+                background: none;
+                border: none;
+                color: #666;
+                cursor: pointer;
+                padding: 0.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: color 0.2s;
+
+                &:hover {
+                    color: #0a59cc;
+                }
+            }
+        }
+
+        .sidebar-nav {
+            padding: 1rem 0;
+            overflow-y: auto;
+
+            .nav-item {
+                width: 100%;
+                border: none;
+                background: none;
+                padding: 1rem 1.5rem;
+                display: flex;
+                align-items: center;
+                color: #666;
+                cursor: pointer;
+                transition: all 0.2s;
+
+                svg {
+                    width: 20px;
+                    margin-right: 1rem;
+                }
+
+                span {
+                    font-size: 0.9rem;
+                }
+
+                &:hover {
+                    background: #f8f9fa;
+                    color: #0a59cc;
+                }
+
+                &.active {
+                    background: #e7f0ff;
+                    color: #0a59cc;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+
+    .dashboard-main {
+        flex: 1;
+        // padding: 2rem;
+        overflow-y: auto;
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            font-size: 1.2rem;
+            color: #666;
+        }
+    }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+    .admin-dashboard {
+        .sidebar {
+            position: fixed;
+            height: 100%;
+            z-index: 1000;
+            transform: translateX(0);
+
+            &.collapsed {
+                transform: translateX(-100%);
+            }
+        }
+
+        .dashboard-main {
+            padding: 1rem;
+        }
+    }
+}

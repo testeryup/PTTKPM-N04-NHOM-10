@@ -1,5 +1,6 @@
 import { Navigate, useNavigate } from 'react-router-dom';
 import './ProductCard.scss';
+import { formatCurrency } from '../../ultils';
 
 export default function ProductCard({ product }) {
     const navigate = useNavigate();
@@ -25,7 +26,7 @@ export default function ProductCard({ product }) {
                         }}
                     />
                     <div className="infor">
-                        <div className="price">{product.minPrice ?? 'undefined'}.₫</div>
+                        <div className="price">{formatCurrency(product.minPrice) ?? 'undefined'}.₫</div>
                         <div className="action">
                             <div className="meta-data">
                                 <div

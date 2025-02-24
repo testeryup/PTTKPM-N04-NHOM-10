@@ -44,7 +44,7 @@ export default function SignUp() {
             <div className='signup-container'>
                 <div className='signup-wrapper'>
                     <div className='signup-content'>
-                        <h2>Đăng kí tài khoản</h2>
+                        <h2>Đăng ký tài khoản</h2>
                         <div className='detail'>Nhập thông tin tài khoản</div>
                         <div className='credential'>
                             <div className='email-section form-group'>

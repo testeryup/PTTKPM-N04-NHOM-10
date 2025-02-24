@@ -82,6 +82,9 @@ export const createOrder = async (req, res) => {
                 status: 'available'
             }).limit(item.quantity).session(session);
 
+            await User.findByIdAndUpdate(inventory.seller, {
+                $inc: {balance: +(item.quantity * item.price)}
+            })
             credentialsList.push({
                 skuId: item.sku,
                 accounts: inventory.map(c => c.credentials)
@@ -97,6 +100,7 @@ export const createOrder = async (req, res) => {
 
 
         }
+
         await Order.findOneAndUpdate({
             _id: order.insertedId
         }, {

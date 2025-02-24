@@ -7,7 +7,7 @@ const payOS = new PayOS(
     process.env.PAYOS_CLIENT_ID,
     process.env.PAYOS_API_KEY,
     process.env.PAYOS_CHECKSUM_KEY
-  );
+);
 export const getUserTransactions = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -97,35 +97,36 @@ export const topUpBalance = async (req, res) => {
 }
 
 export const createPaymentLink = async (req, res) => {
-    const userId = req.user.id;
-    
-
-    if (!req.body.amount) {
-        return res.status(401).json({
-            errCode: 1,
-            message: "Missing input parameter"
-        })
-    }
-    const amount = parseInt(req.body.amount);
-    const user = await User.findById(userId);
-    if (!user) {
-        return res.status(404).json({ message: "User not found" });
-    }
-    const YOUR_DOMAIN = `http://localhost:3000`;
-
-    const userIdPart = parseInt(userId.toString().slice(-4)); // Lấy 4 số cuối của userId
-    const randomPart = Math.floor(Math.random() * 1000); // từ 0 đến 999
-    const orderCode = Number(String(parseInt(userIdPart + String(Date.now()).slice(-6) + String(randomPart))));
-
-    const body = {
-        orderCode: orderCode,
-        amount: amount,
-        description: `${user.username} ${orderCode}`,
-        returnUrl: `${YOUR_DOMAIN}`,
-        cancelUrl: `${YOUR_DOMAIN}`,
-    };
-
     try {
+        const userId = new mongoose.Types.ObjectId(req.user.id);
+
+
+        if (!req.body.amount) {
+            return res.status(401).json({
+                errCode: 1,
+                message: "Missing input parameter"
+            })
+        }
+        const amount = parseInt(req.body.amount);
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        const YOUR_DOMAIN = `http://localhost:3000`;
+
+        const userIdPart = userId.getTimestamp().getTime() % 10000;
+        const randomPart = Math.floor(Math.random() * 1000); // từ 0 đến 999
+        const orderCode = Number(String(parseInt(userIdPart + String(Date.now()).slice(-6) + String(randomPart))));
+
+        const body = {
+            orderCode: orderCode,
+            amount: amount,
+            description: `${user.username} ${orderCode}`,
+            returnUrl: `${YOUR_DOMAIN}`,
+            cancelUrl: `${YOUR_DOMAIN}`,
+        };
+        console.log("check body:", body);
+
         const paymentLinkResponse = await payOS.createPaymentLink(body);
         const transaction = await Transaction.create({
             user: new mongoose.Types.ObjectId(userId),

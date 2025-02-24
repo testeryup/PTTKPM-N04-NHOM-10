@@ -69,15 +69,15 @@ export default function UserHeader() {
                         <div className="logo" onClick={handleGoHome}>OCTOPUS</div>
                         <div className="route-section">
                             <ul className='route-list'>
-                                <li className='route'>Tất cả sản phẩm</li>
-                                <li className='route'>Sản phẩm mua nhiều</li>
-                                <li className='route'>Sản phẩm khuyến mại</li>
+                            <li className='route'><Link to="/products">
+                                    Tất cả sản phẩm
+                                </Link></li>
+                                {/* <li className='route'>Sản phẩm mua nhiều</li>
+                                <li className='route'>Sản phẩm khuyến mại</li> */}
                                 <li className='route'><Link to="/topup">
-                                    {/* <FontAwesomeIcon icon="cog" /> */}
                                     Nạp tiền
                                 </Link></li>
                                 <li className='route'><Link to="/about">
-                                    {/* <FontAwesomeIcon icon="cog" /> */}
                                     Về chúng tôi
                                 </Link></li>
                             </ul>
